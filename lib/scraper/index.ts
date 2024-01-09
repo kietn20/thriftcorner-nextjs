@@ -1,6 +1,9 @@
 'use server'
+const fs = require('fs');
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+const puppeteer = require('puppeteer')
+import { Browser } from "puppeteer";
 
 export async function scrapeProduct(url: string) {
     if (!url) return;
@@ -8,6 +11,7 @@ export async function scrapeProduct(url: string) {
     // BrightData proxy configuration
     const username = String(process.env.BRIGHT_DATA_USERNAME)
     const password = String(process.env.BRIGHT_DATA_PASSWORD)
+    const auth = `${username}:${password}`
     const port = 22225;
     const session_id = (1000000 * Math.random()) | 0;
     const options = {
@@ -20,40 +24,52 @@ export async function scrapeProduct(url: string) {
         rejectUnauthorized: false,
     }
 
+    // const browser: Browser = await puppeteer.connect({
+    //     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
+    // })
+    const browser: Browser = await puppeteer.launch({ headless: true})
     try {
-        const response = await axios.get(url, options)
-        const $ = cheerio.load(response.data);
+        const page = await browser.newPage()
+        await page.goto('https://www.ebay.com/')
+        await page.waitForSelector('#gh-ac')
+        await page.type('#gh-ac', url)
+        await page.click('input[value="Search"]')
+        await page.waitForNavigation()
 
-        const title = $('.x-item-title__mainTitle').text().trim();
-        const price = $('.x-price-primary').text().trim()
-        // const condition = $('.x-item-condition-text span.ux-textspans').text().trim()
-        const seller = $('.d-stores-info-categories__container__info__section__title').text().trim()
-        // const listOfImages = $('.ux-image-carousel zoom img-transition-medium');
-        // const imageUrls: String[] = [];
+        // const page = await browser.newPage();
+        // page.setDefaultNavigationTimeout(2 * 60 * 1000);
+        // await page.goto(url)
+        
+        const productData = await page.evaluate(async () => {
+            function delay(ms: number) {
+                return new Promise((resolve) => { setTimeout(resolve, ms) })
+            }
 
-        // $('div.ux-image-carousel zoom img-transition-medium').each((index, element) => {
-        // const imageUrl = $(element).find('img').attr('srcset');
-        // if (imageUrl) {
-        //     imageUrls.push(imageUrl);
-        // }
-        // });
+            const items = [...document.querySelectorAll('ul > li.s-item')]
+            for (const item of items) {
+                item.scrollIntoView()
+                await delay(100)
+            }
 
-        const imageUrls: String[] = [];
-
-        // Selecting image URLs within the '.ux-image-grid' class
-        $('.ux-image-grid-item > img').each((index, element) => {
-        const imageUrl = $(element).attr('src');
-        if (imageUrl) {
-            imageUrls.push(imageUrl);
-        }
+            return items.map(item => ({
+                title: item.querySelector('.s-item__title')?.textContent?.trim(),
+                price: parseFloat(item.querySelector('span.s-item__price')?.textContent?.trim().replace('$', '') || ""),
+                condition: item.querySelector('span.SECONDARY_INFO')?.textContent?.trim(),                
+                freeShipping: item.querySelector('span.s-item__shipping')?.textContent?.trim() === 'Free shipping',
+                freeReturns: item.querySelector('span.s-item__free-returns')?.textContent?.trim() === 'Free returns',
+                discount: item.querySelector('span.NEGATIVE')?.textContent?.trim() || false,
+                link: item.querySelector('a.s-item__link')?.getAttribute('href'),
+                imageUrl: item.querySelector('div.s-item__image img')?.getAttribute('src')
+            }))
         });
 
-        console.log('Image URLs:', imageUrls);
-        console.log({title, price, seller});
-        console.log($('.x-photos-min-view filmstrip filmstrip-x'))
-        // console.log('Image URLs:', imageUrls);
-
+        // console.log(productData)
+        const data = JSON.stringify(productData, null, 2);
+        fs.writeFileSync('items2.json', data);
+        
     } catch (error: any) {
         throw new Error(`Failed to scrape product: ${error.message}`)
+    } finally {
+        await browser.close()
     }
 }

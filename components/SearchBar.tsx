@@ -36,8 +36,8 @@ const SearchBar = () => {
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		const isValidLink = isValidProductLink(searchPrompt);
-		if (!isValidLink) alert("Please enter a valid link.");
+		// const isValidLink = isValidProductLink(searchPrompt);
+		// if (!isValidLink) alert("Please enter a valid link.");
 
         // Scrape Product 
         const product = await scrapeAndStoreProduct(searchPrompt);
