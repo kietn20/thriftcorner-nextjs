@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema({
     freeReturns: { type: Boolean, required: true },
     discount: { type: String || Boolean, required: true },
     imageUrl: { type: String, required: true }
-})
+}, {timestamps: true})
 
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 

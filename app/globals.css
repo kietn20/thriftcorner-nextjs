@@ -93,10 +93,10 @@
 
 html {
 	box-sizing: border-box;
-	background-color: var(--background);
+	
 }
 
 body {
 	color: rgb(var(--foreground-rgb));
-	
+	background-color: #F6F8F5;
 }
