@@ -1,9 +1,23 @@
+"use client";
 import { DM_Serif_Text } from "next/font/google";
-import * as React from "react";
+import { FormEvent, useEffect, useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import CarouselComponent from "@/components/CarouselComponent";
 import { getAllProducts } from "@/lib/actions";
 import Image from "next/image";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { scrapeAndStoreProduct } from "@/lib/actions";
+import Shop from "@/components/Shop";
 
 const DMST = DM_Serif_Text({
 	subsets: ["latin"],
@@ -11,12 +25,22 @@ const DMST = DM_Serif_Text({
 	variable: "--font-DMST",
 });
 
-export default async function Home() {
-	const allProducts = await getAllProducts();
+export default function Home() {
+	// const initialProducts =  await getAllProducts();
+	const [allProducts, setAllProducts] = useState([]);
+
+	const updateSearchBar = async () => {
+		setAllProducts(await getAllProducts());
+		setTimeout(() => {
+			const shopArea = document.getElementById("shopArea");
+			shopArea?.scrollIntoView({ behavior: "smooth", inline: "center" });
+		}, 2000);
+	};
+
 	return (
 		<>
-			<section className="mt-32 px-6 py- md:px-20">
-				<div className="flex max-xl:flex-col gap-24 justify-center ">
+			<section className="mt-36 px-6 md:px-20">
+				<div className="flex max-xl:flex-col gap-24 justify-center items-center">
 					<div className="flex flex-col justify-center w-[600px]">
 						<h1 className={`text-5xl ${DMST.variable} font-sans`}>
 							Stay <span className="text-[#7e9c6c]">thrifty</span>{" "}
@@ -28,37 +52,16 @@ export default async function Home() {
 							help you convert, engage, and retain more.
 						</p>
 						<br />
-						<SearchBar />
+						<SearchBar updateSearchBar={updateSearchBar} />
 					</div>
 					<CarouselComponent />
 				</div>
-				<br />
-				<div className="mt-40 text-center">
-					<span className={`text-4xl ${DMST.variable} font-sans`}>
-						trending.
-					</span>
-					<br />
-					<br />
-					<div className="flex flex-wrap justify-around gap-2 border border-pink-800">
-						{allProducts?.map((product) => (
-							<div className="w-1/4 flex flex-col items-center justify-start relative border border-blue-500">
-								{/* <span
-									className={`text-1xl ${DMST.variable} font-sans`}
-								>
-									{product.title}
-								</span> */}
-								<div className="p-2">
-									<Image
-										src={product.imageUrl}
-										width={600}
-										height={700}
-										alt={product.title}
-										className="flex align-middle"
-									/>
-								</div>
-							</div>
-						))}
-					</div>
+				<div className="mt-40 text-center px-0">
+					{allProducts.length > 0 ? (
+						<Shop id="shopArea" allProducts={allProducts} />
+					) : (
+						""
+					)}
 				</div>
 			</section>
 		</>

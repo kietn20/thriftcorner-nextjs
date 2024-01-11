@@ -1,14 +1,15 @@
-"use server";
+"use server"
 
 import { revalidatePath } from "next/cache";
 import Product from "../models/product.model";
-import { connectToDB } from "../mongoose";
+import { connectToDB, deleteCollection } from "../mongoose";
 import { scrapeProducts } from "../scraper";
 
 export async function scrapeAndStoreProduct(searchQuery: string) {
 	if (!searchQuery) return;
 
 	try {
+		deleteCollection();
 		connectToDB();
 
 		var scrapedProducts = await scrapeProducts(searchQuery);
@@ -45,7 +46,7 @@ export async function getAllProducts() {
 		connectToDB();
 
 		const products = await Product.find()
-		return products
+		return JSON.parse(JSON.stringify(products))
 	} catch (error) {
 		console.log(error)
 	}

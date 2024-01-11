@@ -93,10 +93,12 @@
 
 html {
 	box-sizing: border-box;
-	
 }
 
 body {
 	color: rgb(var(--foreground-rgb));
 	background-color: #F6F8F5;
+	background-color: #edf3ea;
+	background-color: #f3f3ea;
+	/* background-color: orange; */
 }

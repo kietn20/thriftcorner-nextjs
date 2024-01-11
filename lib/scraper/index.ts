@@ -29,7 +29,7 @@ export async function scrapeProducts(searchQuery: string) {
 	// const browser: Browser = await puppeteer.connect({
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
 	// })
-	const browser: Browser = await puppeteer.launch({ headless: true });
+	const browser: Browser = await puppeteer.launch({ headless: false });
 	try {
 		const page = await browser.newPage();
 		await page.goto("https://www.ebay.com/");
@@ -57,9 +57,11 @@ export async function scrapeProducts(searchQuery: string) {
 			}
 
 			items.map(async (item) => {
-				await page.goto('')
-				
+				// await page.goto('')
 				// product = 
+
+				
+				
 				listOfProducts.push({
 					title: item
 						.querySelector(".s-item__title")
@@ -103,10 +105,12 @@ export async function scrapeProducts(searchQuery: string) {
 		// searchData.forEach((element) => {
 		//     console.log(element.title)
 		// })
+		
 		return searchData;
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
+		console.log('done')
 		browser.close();
 	}
 }

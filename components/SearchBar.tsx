@@ -1,7 +1,6 @@
 "use client";
 
 import React, { FormEvent, useState } from "react";
-
 import {
 	Select,
 	SelectContent,
@@ -15,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { scrapeAndStoreProduct } from "@/lib/actions";
 
-const SearchBar = () => {
+const SearchBar = ({ updateSearchBar = () => {} }) => {
 	const [searchPrompt, setSearchPrompt] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -39,8 +38,9 @@ const SearchBar = () => {
 		// const isValidLink = isValidProductLink(searchPrompt);
 		// if (!isValidLink) alert("Please enter a valid link.");
 
-        // Scrape Product 
-        const product = await scrapeAndStoreProduct(searchPrompt);
+		// Scrape Product
+		const product = await scrapeAndStoreProduct(searchPrompt);
+		// setAllProducts()
 
 		try {
 			setIsLoading(true);
@@ -48,6 +48,7 @@ const SearchBar = () => {
 			console.log(error);
 		} finally {
 			setIsLoading(false);
+			updateSearchBar();
 		}
 	};
 

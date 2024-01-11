@@ -74,7 +74,8 @@ const config = {
       },
       fontFamily: {
         sans: ['var(--font-DMST)']
-      }
+      },
+      visibility: ["group-hover"],
     },
   },
   plugins: [require("tailwindcss-animate")],
