@@ -1,22 +1,12 @@
 "use client";
 import { DM_Serif_Text } from "next/font/google";
-import { FormEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import CarouselComponent from "@/components/CarouselComponent";
 import { getAllProducts } from "@/lib/actions";
 import Image from "next/image";
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectLabel,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { scrapeAndStoreProduct } from "@/lib/actions";
 import Shop from "@/components/Shop";
 
 const DMST = DM_Serif_Text({
@@ -34,7 +24,7 @@ export default function Home() {
 		setTimeout(() => {
 			const shopArea = document.getElementById("shopArea");
 			shopArea?.scrollIntoView({ behavior: "smooth", inline: "center" });
-		}, 2000);
+		}, 1000);
 	};
 
 	return (

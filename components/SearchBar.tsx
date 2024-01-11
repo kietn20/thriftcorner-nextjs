@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { scrapeAndStoreProduct } from "@/lib/actions";
+import { Loader2 } from "lucide-react";
 
 const SearchBar = ({ updateSearchBar = () => {} }) => {
 	const [searchPrompt, setSearchPrompt] = useState("");
@@ -39,16 +40,16 @@ const SearchBar = ({ updateSearchBar = () => {} }) => {
 		// if (!isValidLink) alert("Please enter a valid link.");
 
 		// Scrape Product
-		const product = await scrapeAndStoreProduct(searchPrompt);
 		// setAllProducts()
 
 		try {
 			setIsLoading(true);
+			const product = await scrapeAndStoreProduct(searchPrompt);
 		} catch (error) {
 			console.log(error);
 		} finally {
-			setIsLoading(false);
 			updateSearchBar();
+			setIsLoading(false);
 		}
 	};
 
@@ -72,7 +73,7 @@ const SearchBar = ({ updateSearchBar = () => {} }) => {
 				type="text"
 				value={searchPrompt}
 				onChange={(e) => setSearchPrompt(e.target.value)}
-				placeholder="Enter Product Link"
+				placeholder="'Northface Full Zip Jacket'"
 				className="w-[300px]"
 			/>
 			<Button
@@ -81,7 +82,13 @@ const SearchBar = ({ updateSearchBar = () => {} }) => {
 				variant="default"
 				disabled={searchPrompt === ""}
 			>
-				Search
+				{isLoading ? (
+					<>
+						<Loader2 className="h-4 w-4 animate-spin" />
+					</>
+				) : (
+					"Search"
+				)}
 			</Button>
 		</form>
 	);
