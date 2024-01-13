@@ -4,7 +4,7 @@ const fs = require("fs");
 import axios from "axios";
 import * as cheerio from "cheerio";
 const puppeteer = require("puppeteer");
-import { Browser } from "puppeteer";
+import { Browser, Product } from "puppeteer";
 
 // BrightData proxy configuration
 const username = String(process.env.BRIGHT_DATA_USERNAME);
@@ -24,7 +24,6 @@ const options = {
 
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
-
 
 	// const browser: Browser = await puppeteer.connect({
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
@@ -55,10 +54,10 @@ export async function scrapeProducts(searchQuery: string) {
 				item.scrollIntoView();
 				await delay(100);
 			}
-			
+
 			items.map(async (item) => {
 				// await page.goto('')
-				// product = 
+				// product =
 				listOfProducts.push({
 					title: item
 						.querySelector(".s-item__title")
@@ -69,6 +68,10 @@ export async function scrapeProducts(searchQuery: string) {
 							?.textContent?.trim()
 							.replace("$", "") || ""
 					),
+					seller: "",
+					sellerPfp: "",
+					sold: 0,
+					rating: "",
 					condition: item
 						.querySelector("span.SECONDARY_INFO")
 						?.textContent?.trim(),
@@ -90,6 +93,7 @@ export async function scrapeProducts(searchQuery: string) {
 					imageUrl: item
 						.querySelector("div.s-item__image img")
 						?.getAttribute("src"),
+					imageUrls: [],
 				});
 			});
 
@@ -97,96 +101,85 @@ export async function scrapeProducts(searchQuery: string) {
 		});
 
 		const data = JSON.stringify(searchData, null, 2);
-		fs.writeFileSync("items2.json", data);
-		// console.log(data)
-		// searchData.forEach((element) => {
-		//     console.log(element.title)
-		// })
-		
+		fs.writeFileSync("originalProduct.json", data);
+
 		return searchData;
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
-		console.log('done')
+		console.log("done");
 		browser.close();
 	}
 }
 
-export async function scrapeOneProduct(url: string) {
-	if (!url) return;
+export async function scrapeAndUpdateOneProduct(product: any) {
+	if (!product) return;
 
 	const browser: Browser = await puppeteer.launch({ headless: false });
 	try {
 		const page = await browser.newPage();
-		await page.goto(url);
-		await page.waitForNavigation();
+		await page.goto(product.url);
+		// await page.waitForNavigation();
 
-		var searchData = await page.evaluate(async () => {
-			var listOfProducts: any[] = [];
+		var updatedProduct: any = await page.evaluate(async () => {
 			function delay(ms: number) {
 				return new Promise((resolve) => {
 					setTimeout(resolve, ms);
 				});
 			}
 
-			const items = [...document.querySelectorAll("ul > li.s-item")];
-			for (const item of items) {
-				item.scrollIntoView();
+			const newProduct = {...product}
+
+			// Search Seller's data
+			newProduct.seller =
+				document
+					.querySelector(
+						".d-stores-info-categories__container__info__section__title > span"
+					)
+					?.textContent?.trim() || "didnt work";
+			newProduct.sellerPFP =
+				document
+					.querySelector(
+						".d-stores-info-categories__container__info__image--img"
+					)
+					?.getAttribute("src") || "didn't work";
+			const sellerInfo = [
+				...document.querySelectorAll(
+					".d-stores-info-categories__container__info__section__item"
+				),
+			];
+			newProduct.rating = sellerInfo[0]?.textContent?.trim() || "didnt work";
+
+			const images = [
+				...document.querySelectorAll(
+					".ux-image-grid-container.masonry-211.x-photos-max-view--show > button > img"
+				),
+			];
+			for (const image of images) {
+				image.scrollIntoView();
 				await delay(100);
 			}
-			
-			items.map(async (item) => {
-				// await page.goto('')
-				// product = 
-				listOfProducts.push({
-					title: item
-						.querySelector(".s-item__title")
-						?.textContent?.trim(),
-					price: parseFloat(
-						item
-							.querySelector("span.s-item__price")
-							?.textContent?.trim()
-							.replace("$", "") || ""
-					),
-					condition: item
-						.querySelector("span.SECONDARY_INFO")
-						?.textContent?.trim(),
-					freeShipping:
-						item
-							.querySelector("span.s-item__shipping")
-							?.textContent?.trim() === "Free shipping",
-					freeReturns:
-						item
-							.querySelector("span.s-item__free-returns")
-							?.textContent?.trim() === "Free returns",
-					discount:
-						item
-							.querySelector("span.NEGATIVE")
-							?.textContent?.trim() || false,
-					url: item
-						.querySelector("a.s-item__link")
-						?.getAttribute("href"),
-					imageUrl: item
-						.querySelector("div.s-item__image img")
-						?.getAttribute("src"),
-				});
-			});
 
-			return listOfProducts;
+			let scrapedImageUrls: any[] = [];
+			images.map((image) => {
+				scrapedImageUrls = [
+					...scrapedImageUrls,
+					image.getAttribute("data-src") || "didnt work",
+				];
+			});
+			newProduct.imageUrls = scrapedImageUrls
+			
+			return newProduct
 		});
 
-		const data = JSON.stringify(searchData, null, 2);
-		fs.writeFileSync("items2.json", data);
-		// console.log(data)
-		// searchData.forEach((element) => {
-		//     console.log(element.title)
-		// })
-		
-		return searchData;
+		const data = JSON.stringify(updatedProduct, null, 2);
+		fs.writeFileSync("updatedProducts.json", data);
+
+		return updatedProduct;
 	} catch (error: any) {
-		throw new Error(`Failed to scrape product: ${error.message}`);
+		console.log(`Failed to scrape product: ${error.message}`);
 	} finally {
-		console.log('done')
+		console.log("done");
 		browser.close();
 	}
 }
