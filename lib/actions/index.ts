@@ -33,9 +33,10 @@ export async function getProductById(productId: string) {
 		connectToDB()
 
 		const product = await Product.findOne({ _id: productId});
-		if (!product) return;
+		if (!product) return null;
 
-		return product;
+		return product
+		return JSON.parse(JSON.stringify(product));
 	} catch (error) {
 		console.log(error)
 	}

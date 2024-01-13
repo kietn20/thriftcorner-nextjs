@@ -51,10 +51,89 @@ export async function scrapeProducts(searchQuery: string) {
 			}
 
 			const items = [...document.querySelectorAll("ul > li.s-item")];
-			// for (const item of items) {
-			// 	item.scrollIntoView();
-			// 	await delay(100);
-			// }
+			for (const item of items) {
+				item.scrollIntoView();
+				await delay(100);
+			}
+			
+			items.map(async (item) => {
+				// await page.goto('')
+				// product = 
+				listOfProducts.push({
+					title: item
+						.querySelector(".s-item__title")
+						?.textContent?.trim(),
+					price: parseFloat(
+						item
+							.querySelector("span.s-item__price")
+							?.textContent?.trim()
+							.replace("$", "") || ""
+					),
+					condition: item
+						.querySelector("span.SECONDARY_INFO")
+						?.textContent?.trim(),
+					freeShipping:
+						item
+							.querySelector("span.s-item__shipping")
+							?.textContent?.trim() === "Free shipping",
+					freeReturns:
+						item
+							.querySelector("span.s-item__free-returns")
+							?.textContent?.trim() === "Free returns",
+					discount:
+						item
+							.querySelector("span.NEGATIVE")
+							?.textContent?.trim() || false,
+					url: item
+						.querySelector("a.s-item__link")
+						?.getAttribute("href"),
+					imageUrl: item
+						.querySelector("div.s-item__image img")
+						?.getAttribute("src"),
+				});
+			});
+
+			return listOfProducts;
+		});
+
+		const data = JSON.stringify(searchData, null, 2);
+		fs.writeFileSync("items2.json", data);
+		// console.log(data)
+		// searchData.forEach((element) => {
+		//     console.log(element.title)
+		// })
+		
+		return searchData;
+	} catch (error: any) {
+		throw new Error(`Failed to scrape product: ${error.message}`);
+	} finally {
+		console.log('done')
+		browser.close();
+	}
+}
+
+export async function scrapeOneProduct(url: string) {
+	if (!url) return;
+
+	const browser: Browser = await puppeteer.launch({ headless: false });
+	try {
+		const page = await browser.newPage();
+		await page.goto(url);
+		await page.waitForNavigation();
+
+		var searchData = await page.evaluate(async () => {
+			var listOfProducts: any[] = [];
+			function delay(ms: number) {
+				return new Promise((resolve) => {
+					setTimeout(resolve, ms);
+				});
+			}
+
+			const items = [...document.querySelectorAll("ul > li.s-item")];
+			for (const item of items) {
+				item.scrollIntoView();
+				await delay(100);
+			}
 			
 			items.map(async (item) => {
 				// await page.goto('')

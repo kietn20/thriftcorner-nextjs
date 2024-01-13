@@ -24,7 +24,7 @@ export default function Home() {
 		setTimeout(() => {
 			const shopArea = document.getElementById("shopArea");
 			shopArea?.scrollIntoView({ behavior: "smooth", inline: "center" });
-		}, 1000);
+		}, 800);
 	};
 
 	return (
@@ -46,7 +46,7 @@ export default function Home() {
 					</div>
 					<CarouselComponent />
 				</div>
-				<div className="mt-40 text-center px-0">
+				<div className="mt-28 text-center px-0">
 					{allProducts.length > 0 ? (
 						<Shop id="shopArea" allProducts={allProducts} />
 					) : (
