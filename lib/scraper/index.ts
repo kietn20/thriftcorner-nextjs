@@ -121,38 +121,22 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 		await page.goto(product.url);
 		// await page.waitForNavigation();
 
-		var updatedProduct: any = await page.evaluate(async () => {
+		let updatedProduct = await page.evaluate(async () => {
 			function delay(ms: number) {
 				return new Promise((resolve) => {
 					setTimeout(resolve, ms);
 				});
 			}
-
-			const newProduct = {...product}
-
 			// Search Seller's data
-			newProduct.seller =
-				document
-					.querySelector(
-						".d-stores-info-categories__container__info__section__title > span"
-					)
-					?.textContent?.trim() || "didnt work";
-			newProduct.sellerPFP =
-				document
-					.querySelector(
-						".d-stores-info-categories__container__info__image--img"
-					)
-					?.getAttribute("src") || "didn't work";
-			const sellerInfo = [
-				...document.querySelectorAll(
-					".d-stores-info-categories__container__info__section__item"
-				),
-			];
-			newProduct.rating = sellerInfo[0]?.textContent?.trim() || "didnt work";
+			const seller = document.querySelector('.d-stores-info-categories__container__info__section__title')?.textContent?.trim()
+			const sellerPfp = document.querySelector(".d-stores-info-categories__container__info__image--img")?.getAttribute("src") || "didn't work";
+			const sellerInfo = [...document.querySelectorAll(".d-stores-info-categories__container__info__section__item")];
+			const rating = sellerInfo[0]?.textContent?.trim() || "didnt work";
+			const sold = sellerInfo[1]?.textContent?.trim() || "didnt work";
 
 			const images = [
 				...document.querySelectorAll(
-					".ux-image-grid-container.masonry-211.x-photos-max-view--show > button > img"
+					".ux-image-grid-container.masonry-211.x-photos-max-view--show > div.ux-image-grid > button"
 				),
 			];
 			for (const image of images) {
@@ -162,14 +146,10 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 
 			let scrapedImageUrls: any[] = [];
 			images.map((image) => {
-				scrapedImageUrls = [
-					...scrapedImageUrls,
-					image.getAttribute("data-src") || "didnt work",
-				];
+				scrapedImageUrls.push(image.querySelector('img')?.getAttribute("data-src") || "didnt work",);
 			});
-			newProduct.imageUrls = scrapedImageUrls
-			
-			return newProduct
+
+			return {seller, sellerPfp, sold, rating, scrapedImageUrls}
 		});
 
 		const data = JSON.stringify(updatedProduct, null, 2);
@@ -177,9 +157,9 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 
 		return updatedProduct;
 	} catch (error: any) {
-		console.log(`Failed to scrape product: ${error.message}`);
+		console.log(`Failed to scrape product: ${error.message} dogggy`);
 	} finally {
-		console.log("done");
+		console.log("done updating product");
 		browser.close();
 	}
 }

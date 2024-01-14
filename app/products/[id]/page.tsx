@@ -13,32 +13,32 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 	let product = await getProductById(id);
 	if (!product) redirect("/");
 
-	product = await scrapeAndUpdateOneProduct(product);
-	console.log(`object: ${product}`)
+	const info = await scrapeAndUpdateOneProduct(product);
+	console.log(`object: ${info}`);
 	return (
 		<>
 			<div>{product.title}</div>
-			<div>{product.seller}</div>
-			<div>{product.sold}</div>
-			<div>{product.rating}</div>
-			{/* <Image
-				src={product.imageUrls[0]}
+			<div>{info?.seller}</div>
+			<div>{info?.sold}</div>
+			<div>{info?.rating}</div>
+			<Image
+				src={info?.scrapedImageUrls[0]}
 				width={100}
 				height={100}
 				alt="image1"
 			/>
 			<Image
-				src={product.imageUrls[1]}
+				src={info?.scrapedImageUrls[1]}
 				width={100}
 				height={100}
-				alt="image1"
+				alt="image2"
 			/>
 			<Image
-				src={product.imageUrls[1]}
+				src={info?.scrapedImageUrls[1]}
 				width={100}
 				height={100}
-				alt="image1"
-			/> */}
+				alt="image3"
+			/>
 		</>
 	);
 };
