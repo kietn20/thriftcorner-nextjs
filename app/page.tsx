@@ -15,6 +15,14 @@ const DMST = DM_Serif_Text({
 	variable: "--font-DMST",
 });
 
+const clothesSrc = [
+	"/assets/test1.jpg",
+	"/assets/test2.jpg",
+	"/assets/test3.jpg",
+	"/assets/test4.jpg",
+	"/assets/test5.jpg",
+];
+
 export default function Home() {
 	// const initialProducts =  await getAllProducts();
 	const [allProducts, setAllProducts] = useState([]);
@@ -44,7 +52,7 @@ export default function Home() {
 						<br />
 						<SearchBar updateSearchBar={updateSearchBar} />
 					</div>
-					<CarouselComponent />
+					<CarouselComponent srcs={clothesSrc}/>
 				</div>
 				<div className="mt-28 text-center px-0">
 					{allProducts.length > 0 ? (
