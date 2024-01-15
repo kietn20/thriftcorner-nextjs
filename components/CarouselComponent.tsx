@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import Link from "next/link";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 interface ProductProps {
 	srcs?: string[];
@@ -21,15 +22,15 @@ const CarouselComponent: React.FC<ProductProps> = (props?: ProductProps) => {
 	return (
 		<div>
 			<Carousel className="w-full max-w-[600px] p-5">
-				<Link href={props?.url || ""} target="_blank" className="group">
+				<Link href={props?.url || ""} target="_blank" className="">
 					<CarouselContent>
 						{props?.srcs?.map((image: string) => (
 							<CarouselItem key={image} className="">
 								<div
 									key={image}
-									className="rounded-xl flex justify-center hover:p-7 ease-in-out duration-300 bg-[#7e9c6c]"
+									className="group rounded-xl flex justify-center hover:p-8 ease-in-out duration-300 bg-[#7e9c6c]"
 								>
-									<Card>
+									<Card className="">
 										<CardContent className="flex justify-center aspect-square p-2">
 											<Image
 												src={image}
@@ -39,10 +40,11 @@ const CarouselComponent: React.FC<ProductProps> = (props?: ProductProps) => {
 												className="rounded-md"
 											/>
 										</CardContent>
-										<span className="text-xs font-light opacity-0 absolute bottom-3 left-8 text-white">
-											Ebay
-										</span>
 									</Card>
+									<span className="text-xs font-light opacity-0 group-hover:opacity-100 absolute bottom-2 left-7 text-white flex">
+										Ebay&nbsp;&nbsp;
+										<FaExternalLinkAlt />
+									</span>
 								</div>
 							</CarouselItem>
 						))}

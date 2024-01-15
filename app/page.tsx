@@ -28,6 +28,7 @@ export default function Home() {
 	const [allProducts, setAllProducts] = useState([]);
 
 	const updateSearchBar = async () => {
+		setAllProducts([]);
 		setAllProducts(await getAllProducts());
 		setTimeout(() => {
 			const shopArea = document.getElementById("shopArea");
