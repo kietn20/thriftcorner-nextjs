@@ -39,7 +39,7 @@ const Shop = ({ allProducts }: any) => {
 							<Image
 								src={product.imageUrl}
 								width={300}
-								height={200}
+								height={150}
 								alt={product.title}
 								className="flex align-middle"
 							/>

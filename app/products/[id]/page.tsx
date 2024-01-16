@@ -50,7 +50,8 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 			<div className="">
 				<CarouselComponent
 					url={product.url}
-					srcs={info.scrapedImageUrls}
+					srcs={info?.scrapedImageUrls}
+					parent="productpage"
 				/>
 			</div>
 			<div className="flex flex-col w-[600px] p-8">
@@ -64,8 +65,17 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 					<br />
 					<div className="flex justify-between">
 						<div className="flex flex-col">
+							{product.discount !== "false" ? (
+								<h2
+									className={`text-2xl ${DMST.variable} font-sans text-red-600`}
+								>
+									{product.discount}
+								</h2>
+							) : (
+								""
+							)}
 							<h2
-								 className={`text-3xl ${DMST.variable} font-sans`}
+								className={`text-3xl ${DMST.variable} font-sans`}
 							>
 								US ${product.price.toFixed(2)}
 							</h2>
@@ -83,9 +93,21 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 									className="rounded-xl"
 								/>
 								<div className="flex flex-col">
-									<span className={`text-1xl ${DMST.variable} font-sans`}>{info?.seller}</span>
-									<span className={`text-1xl ${DMST.variable} font-sans`}>{info?.sold}</span>
-									<span className={`text-1xl ${DMST.variable} font-sans`}>{info?.rating}</span>
+									<span
+										className={`text-1xl ${DMST.variable} font-sans`}
+									>
+										{info?.seller}
+									</span>
+									<span
+										className={`text-1xl ${DMST.variable} font-sans`}
+									>
+										{info?.sold}
+									</span>
+									<span
+										className={`text-1xl ${DMST.variable} font-sans`}
+									>
+										{info?.rating}
+									</span>
 								</div>
 							</div>
 						</div>

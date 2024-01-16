@@ -63,9 +63,9 @@ const SearchBar = ({ updateSearchBar = () => {} }) => {
 					<SelectGroup>
 						<SelectLabel>Market</SelectLabel>
 						<SelectItem value="Ebay">Ebay</SelectItem>
-						<SelectItem value="Facebook">Facebook</SelectItem>
-						<SelectItem value="OfferUp">OfferUp</SelectItem>
-						<SelectItem value="Poshmark">Poshmark</SelectItem>
+						<SelectItem disabled value="Facebook">Facebook</SelectItem>
+						<SelectItem disabled value="OfferUp">OfferUp</SelectItem>
+						<SelectItem disabled value="Poshmark">Poshmark</SelectItem>
 					</SelectGroup>
 				</SelectContent>
 			</Select>
@@ -73,7 +73,7 @@ const SearchBar = ({ updateSearchBar = () => {} }) => {
 				type="text"
 				value={searchPrompt}
 				onChange={(e) => setSearchPrompt(e.target.value)}
-				placeholder="'Northface Full Zip Jacket'"
+				placeholder="Vintage Polo Ralph Lauren Jacket"
 				className="w-[300px]"
 			/>
 			<Button

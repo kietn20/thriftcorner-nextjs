@@ -8,6 +8,16 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Shop from "@/components/Shop";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+	CarouselNext,
+	CarouselPrevious,
+} from "@/components/ui/carousel";
+import Link from "next/link";
+import Contact from "@/components/Contact";
 
 const DMST = DM_Serif_Text({
 	subsets: ["latin"],
@@ -15,12 +25,27 @@ const DMST = DM_Serif_Text({
 	variable: "--font-DMST",
 });
 
-const clothesSrc = [
-	"/assets/test1.jpg",
-	"/assets/test2.jpg",
-	"/assets/test3.jpg",
-	"/assets/test4.jpg",
-	"/assets/test5.jpg",
+const displayItems = [
+	{
+		url: "https://www.ebay.com/itm/386483529913?hash=item59fc36a8b9:g:jNMAAOSwJh5lhp1S",
+		imageSrc: "/assets/test5.jpg",
+	},
+	{
+		url: "https://www.ebay.com/itm/386577108314?hash=item5a01ca8d5a:g:0tUAAOSwIydlmOOH",
+		imageSrc: "/assets/test2.jpg",
+	},
+	{
+		url: "https://www.ebay.com/itm/386638465871?hash=item5a0572cb4f:g:IagAAOSwxOJlpLhe",
+		imageSrc: "/assets/test3.jpg",
+	},
+	{
+		url: "https://www.ebay.com/itm/386638477059?hash=item5a0572f703:g:g1cAAOSwxNxlpLj6",
+		imageSrc: "/assets/test4.jpg",
+	},
+	{
+		url: "https://www.ebay.com/itm/386577098688?hash=item5a01ca67c0:g:GDwAAOSwGr5lmONe",
+		imageSrc: "/assets/test1.jpg",
+	}
 ];
 
 export default function Home() {
@@ -33,7 +58,7 @@ export default function Home() {
 		setTimeout(() => {
 			const shopArea = document.getElementById("shopArea");
 			shopArea?.scrollIntoView({ behavior: "smooth", inline: "center" });
-		}, 800);
+		}, 700);
 	};
 
 	return (
@@ -53,7 +78,31 @@ export default function Home() {
 						<br />
 						<SearchBar updateSearchBar={updateSearchBar} />
 					</div>
-					<CarouselComponent srcs={clothesSrc}/>
+					<Carousel className="w-full max-w-[600px] p-5">
+						<CarouselContent>
+							{displayItems.map((item) => (
+								<CarouselItem key={item.url} className="">
+									<div className="group rounded-xl flex justify-center hover:p-8 ease-in-out duration-300 bg-[#7e9c6c]">
+										<Link href={item.url} target="_blank">
+											<Card className="">
+												<CardContent className="flex justify-center aspect-square p-2">
+													<Image
+														src={item.imageSrc}
+														width={600}
+														height={400}
+														alt="1"
+														className="rounded-md"
+													/>
+												</CardContent>
+											</Card>
+										</Link>
+									</div>
+								</CarouselItem>
+							))}
+						</CarouselContent>
+						<CarouselPrevious />
+						<CarouselNext />
+					</Carousel>
 				</div>
 				<div className="mt-28 text-center px-0">
 					{allProducts.length > 0 ? (
@@ -62,6 +111,7 @@ export default function Home() {
 						""
 					)}
 				</div>
+				<Contact />
 			</section>
 		</>
 	);

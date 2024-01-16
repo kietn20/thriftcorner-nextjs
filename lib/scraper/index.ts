@@ -52,12 +52,10 @@ export async function scrapeProducts(searchQuery: string) {
 			const items = [...document.querySelectorAll("ul > li.s-item")];
 			for (const item of items) {
 				item.scrollIntoView();
-				await delay(100);
+				await delay(50);
 			}
 
 			items.map(async (item) => {
-				// await page.goto('')
-				// product =
 				listOfProducts.push({
 					title: item
 						.querySelector(".s-item__title")

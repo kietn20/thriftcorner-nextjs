@@ -16,6 +16,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 interface ProductProps {
 	srcs?: string[];
 	url?: string;
+	parent: string;
 }
 
 const CarouselComponent: React.FC<ProductProps> = (props?: ProductProps) => {
@@ -35,16 +36,20 @@ const CarouselComponent: React.FC<ProductProps> = (props?: ProductProps) => {
 											<Image
 												src={image}
 												width={600}
-												height={500}
+												height={400}
 												alt="1"
 												className="rounded-md"
 											/>
 										</CardContent>
 									</Card>
-									<span className="text-xs font-light opacity-0 group-hover:opacity-100 absolute bottom-2 left-7 text-white flex">
-										Ebay&nbsp;&nbsp;
-										<FaExternalLinkAlt />
-									</span>
+									{props.url ? (
+										<span className="text-xs font-light opacity-0 group-hover:opacity-100 absolute bottom-2 left-7 text-white flex">
+											Ebay&nbsp;&nbsp;
+											<FaExternalLinkAlt />
+										</span>
+									) : (
+										""
+									)}
 								</div>
 							</CarouselItem>
 						))}
