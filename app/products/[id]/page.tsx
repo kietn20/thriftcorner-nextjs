@@ -3,33 +3,11 @@ import CarouselComponent from "@/components/CarouselComponent";
 import { getProductById } from "@/lib/actions";
 import { scrapeAndUpdateOneProduct } from "@/lib/scraper";
 import Image from "next/image";
-import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { redirect} from "next/navigation";
 import React from "react";
 
 type Props = {
 	params: { id: string };
-};
-
-const info = {
-	seller: "choesengoods",
-	sellerPfp: "https://i.ebayimg.com/images/g/x7cAAOSwTwNi6Vd4/s-l140.jpg",
-	sold: "5.8K items sold",
-	rating: "100% Positive Feedback",
-	scrapedImageUrls: [
-		"https://i.ebayimg.com/images/g/tJwAAOSwtERk5-lL/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/CzQAAOSwukZk5-lM/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/na0AAOSwQQhk5-lL/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/KKkAAOSwFddk5-lM/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/NBYAAOSwBd5k5-lL/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/krsAAOSwtg1k5-lK/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/WckAAOSwSANk5-lK/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/FO4AAOSwMWFk5-lL/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/M08AAOSwANNk5-lL/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/JGsAAOSwdM5k5-lK/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/AzAAAOSwcn1k5-lK/s-l500.jpg",
-		"https://i.ebayimg.com/images/g/~0cAAOSwFm1k5-lM/s-l500.jpg",
-	],
 };
 
 import { DM_Serif_Text } from "next/font/google";
@@ -44,7 +22,6 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 	if (!product) redirect("/");
 
 	const info = await scrapeAndUpdateOneProduct(product);
-	// console.log(`object: ${info}`);
 	return (
 		<div className="m-auto mt-24 w-[1500px] flex justify-center gap-20 p-10">
 			<div className="">

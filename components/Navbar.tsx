@@ -11,7 +11,6 @@ const DMST = DM_Serif_Text({
 
 const Navbar = () => {
 	return (
-		//fixed position for fixed navbar?? or sticky??
 		<div className="flex flex-col w-96 mx-auto relative">
 			<Link
 				href="/"

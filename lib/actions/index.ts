@@ -36,7 +36,6 @@ export async function getProductById(productId: string) {
 		if (!product) return null;
 
 		return product
-		return JSON.parse(JSON.stringify(product));
 	} catch (error) {
 		console.log(error)
 	}

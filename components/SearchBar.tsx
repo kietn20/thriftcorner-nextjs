@@ -19,28 +19,22 @@ const SearchBar = ({ updateSearchBar = () => {} }) => {
 	const [searchPrompt, setSearchPrompt] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 
-	const isValidProductLink = (url: string) => {
-		const parsedURL = new URL(url);
-		const hostname = parsedURL.hostname;
+	// const isValidProductLink = (url: string) => {
+	// 	const parsedURL = new URL(url);
+	// 	const hostname = parsedURL.hostname;
 
-		if (
-			hostname.includes("ebay.com") ||
-			hostname.includes("ebay.") ||
-			hostname.includes("ebay")
-		) {
-			return true;
-		}
-		return false;
-	};
+	// 	if (
+	// 		hostname.includes("ebay.com") ||
+	// 		hostname.includes("ebay.") ||
+	// 		hostname.includes("ebay")
+	// 	) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// };
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-
-		// const isValidLink = isValidProductLink(searchPrompt);
-		// if (!isValidLink) alert("Please enter a valid link.");
-
-		// Scrape Product
-		// setAllProducts()
 
 		try {
 			setIsLoading(true);

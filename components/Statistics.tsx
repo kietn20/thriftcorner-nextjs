@@ -10,30 +10,6 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 
-const data = [
-	{
-		price: 4000,
-	},
-	{
-		price: 3000,
-	},
-	{
-		price: 2000,
-	},
-	{
-		price: 2780,
-	},
-	{
-		price: 1890,
-	},
-	{
-		price: 2390,
-	},
-	{
-		price: 3490,
-	},
-];
-
 const Statistics = ({products}: any) => {
 	return (
 		<div className="w-full h-[600px]">

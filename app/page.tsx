@@ -102,12 +102,14 @@ export default function Home() {
 				</div>
 				<div className="mt-28 text-center">
 					{allProducts.length > 0 ? (
-						<Shop id="shopArea" allProducts={allProducts} />
+						<div>
+							<Shop id="shopArea" allProducts={allProducts} />
+							<Contact />
+						</div>
 					) : (
 						""
 					)}
 				</div>
-				<Contact />
 			</section>
 		</>
 	);

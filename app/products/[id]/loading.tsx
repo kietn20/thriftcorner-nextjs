@@ -1,10 +1,3 @@
-import { DM_Serif_Text } from "next/font/google";
-const DMST = DM_Serif_Text({
-	subsets: ["latin"],
-	weight: "400",
-	variable: "--font-DMST",
-});
-
 export default function loading() {
 	return (
 		<div className="h-[90vh] flex space-x-2 justify-center items-center dark:invert">
