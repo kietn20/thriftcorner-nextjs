@@ -1,10 +1,8 @@
 "use server";
 
 const fs = require("fs");
-import axios from "axios";
-import * as cheerio from "cheerio";
 const puppeteer = require("puppeteer");
-import { Browser, Product } from "puppeteer";
+import { Browser } from "puppeteer";
 
 // BrightData proxy configuration
 const username = String(process.env.BRIGHT_DATA_USERNAME);
@@ -28,7 +26,7 @@ export async function scrapeProducts(searchQuery: string) {
 	// const browser: Browser = await puppeteer.connect({
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
 	// })
-	const browser: Browser = await puppeteer.launch({ headless: false });
+	const browser: Browser = await puppeteer.launch({ headless: true });
 	try {
 		const page = await browser.newPage();
 		await page.goto("https://www.ebay.com/");
@@ -36,10 +34,6 @@ export async function scrapeProducts(searchQuery: string) {
 		await page.type("#gh-ac", searchQuery);
 		await page.click('input[value="Search"]');
 		await page.waitForNavigation();
-
-		// const page = await browser.newPage();
-		// page.setDefaultNavigationTimeout(2 * 60 * 1000);
-		// await page.goto(url)
 
 		var searchData = await page.evaluate(async () => {
 			var listOfProducts: any[] = [];
@@ -49,7 +43,7 @@ export async function scrapeProducts(searchQuery: string) {
 				});
 			}
 
-			const items = [...document.querySelectorAll("ul > li.s-item")];
+			const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
 			for (const item of items) {
 				item.scrollIntoView();
 				await delay(50);
@@ -113,11 +107,10 @@ export async function scrapeProducts(searchQuery: string) {
 export async function scrapeAndUpdateOneProduct(product: any) {
 	if (!product) return;
 
-	const browser: Browser = await puppeteer.launch({ headless: false });
+	const browser: Browser = await puppeteer.launch({ headless: true });
 	try {
 		const page = await browser.newPage();
 		await page.goto(product.url);
-		// await page.waitForNavigation();
 
 		let updatedProduct = await page.evaluate(async () => {
 			function delay(ms: number) {
@@ -139,7 +132,7 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 			];
 			for (const image of images) {
 				image.scrollIntoView();
-				await delay(100);
+				await delay(50);
 			}
 
 			let scrapedImageUrls: any[] = [];

@@ -17,7 +17,6 @@ import { Textarea } from "@/components/ui/textarea";
 import emailjs from "@emailjs/browser";
 
 const Contact = () => {
-	const [showButton, setShowButton] = useState(false);
 	const form = useRef();
 
 	const sendEmail = (e: any) => {
@@ -25,10 +24,10 @@ const Contact = () => {
 
 		emailjs
 			.sendForm(
-				"service_s6mhkte",
-				"template_evpoxop",
+				String(process.env.SERVICE_ID),
+				String(process.env.TEMPLATE_ID),
 				form.current,
-				"hZxrxCACq8K6qUxwh"
+				String(process.env.PUBLIC_KEY)
 			)
 			.then(
 				(result) => {
@@ -82,7 +81,7 @@ const Contact = () => {
 								<Input
 									required
 									name="user_email"
-                                    type="email"
+									type="email"
 									placeholder="strawhat123@gmail.com"
 									className="col-span-3"
 								/>
@@ -97,7 +96,7 @@ const Contact = () => {
 								<Textarea
 									placeholder="Type your message here."
 									className="col-span-3"
-                                    name="message"
+									name="message"
 								/>
 							</div>
 						</div>

@@ -75,22 +75,6 @@
 	}
 }
 
-/* :root {
-	--text: #0d110b;
-	--background: #f6f8f5;
-	--primary: #7e9c6c;
-	--secondary: #a6c3c1;
-	--accent: #8ca2b1;
-} */
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */
-
 html {
 	box-sizing: border-box;
 }

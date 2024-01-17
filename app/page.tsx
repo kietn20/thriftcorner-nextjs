@@ -2,11 +2,8 @@
 import { DM_Serif_Text } from "next/font/google";
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
-import CarouselComponent from "@/components/CarouselComponent";
 import { getAllProducts } from "@/lib/actions";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import Shop from "@/components/Shop";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -45,11 +42,10 @@ const displayItems = [
 	{
 		url: "https://www.ebay.com/itm/386577098688?hash=item5a01ca67c0:g:GDwAAOSwGr5lmONe",
 		imageSrc: "/assets/test1.jpg",
-	}
+	},
 ];
 
 export default function Home() {
-	// const initialProducts =  await getAllProducts();
 	const [allProducts, setAllProducts] = useState([]);
 
 	const updateSearchBar = async () => {
@@ -104,7 +100,7 @@ export default function Home() {
 						<CarouselNext />
 					</Carousel>
 				</div>
-				<div className="mt-28 text-center px-0">
+				<div className="mt-28 text-center">
 					{allProducts.length > 0 ? (
 						<Shop id="shopArea" allProducts={allProducts} />
 					) : (
