@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import emailjs from "@emailjs/browser";
 
 const Contact = () => {
-	const form = useRef();
+	const form = useRef(null);
 
 	const sendEmail = (e: any) => {
 		e.preventDefault();
