@@ -26,7 +26,7 @@ export async function scrapeProducts(searchQuery: string) {
 	// const browser: Browser = await puppeteer.connect({
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
 	// })
-	const browser: Browser = await puppeteer.launch({ headless: true });
+	const browser: Browser = await puppeteer.launch({ headless: new });
 	try {
 		const page = await browser.newPage();
 		await page.goto("https://www.ebay.com/");
@@ -107,7 +107,7 @@ export async function scrapeProducts(searchQuery: string) {
 export async function scrapeAndUpdateOneProduct(product: any) {
 	if (!product) return;
 
-	const browser: Browser = await puppeteer.launch({ headless: true });
+	const browser: Browser = await puppeteer.launch({ headless: new });
 	try {
 		const page = await browser.newPage();
 		await page.goto(product.url);
