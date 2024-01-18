@@ -1,5 +1,4 @@
 "use server"
-
 import { revalidatePath } from "next/cache";
 import Product from "../models/product.model";
 import { connectToDB, deleteCollection } from "../mongoose";
@@ -9,7 +8,7 @@ export async function scrapeAndStoreProduct(searchQuery: string) {
 	if (!searchQuery) return;
 
 	try {
-		deleteCollection();
+		// deleteCollection();
 		connectToDB();
 
 		var scrapedProducts = await scrapeProducts(searchQuery);
