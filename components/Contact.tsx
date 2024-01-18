@@ -21,12 +21,14 @@ const Contact = () => {
 
 	const sendEmail = (e: any) => {
 		e.preventDefault();
-
+		const currentForm = form.current;
+		if (currentForm == null) return;
+		
 		emailjs
 			.sendForm(
 				String(process.env.SERVICE_ID),
 				String(process.env.TEMPLATE_ID),
-				form.current,
+				currentForm,
 				String(process.env.PUBLIC_KEY)
 			)
 			.then(
