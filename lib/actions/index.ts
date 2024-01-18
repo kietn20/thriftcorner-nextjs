@@ -8,7 +8,7 @@ export async function scrapeAndStoreProduct(searchQuery: string) {
 	if (!searchQuery) return;
 
 	try {
-		// deleteCollection();
+		deleteCollection();
 		connectToDB();
 
 		var scrapedProducts = await scrapeProducts(searchQuery);
