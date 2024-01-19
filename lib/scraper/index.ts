@@ -20,13 +20,50 @@ const options = {
 	rejectUnauthorized: false,
 };
 
+// let chrome = {}
+// let puppeteer: any;
+
+// if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+// 	chrome = require("chrome-aws-lambda")
+// 	puppeteer = require("puppeteer-core")
+// } else {
+// 	puppeteer = require("puppeteer")
+// }
+
+import chromium from 'chrome-aws-lambda'
+
+async function getBrowserInstance() {
+	// const chromium = require('chrome-aws-lambda')
+	const executablePath = await chromium.executablePath
+
+	if (!executablePath){
+		// run locally
+		const puppeteer = require('puppeteer')
+		return puppeteer.launch({
+			args: chromium.args,
+			headless: true,
+			ignoreHTTPSErrors: true
+		})
+	}
+
+	return chromium.puppeteer.launch({
+		args: chromium.args,
+		defaultViewport: chromium.defaultViewport,
+		executablePath: await chromium.executablePath,
+		headless: true,
+		ignoreHTTPSErrors: true
+	})
+}
+
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
 
 	// const browser: Browser = await puppeteer.connect({
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
 	// })
-	const browser: Browser = await puppeteer.launch({ headless: false });
+
+	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
+	const browser = await getBrowserInstance()
 	try {
 		const page = await browser.newPage();
 		await page.goto("https://www.ebay.com/");
@@ -92,8 +129,8 @@ export async function scrapeProducts(searchQuery: string) {
 			return listOfProducts;
 		});
 
-		const data = JSON.stringify(searchData, null, 2);
-		fs.writeFileSync("originalProduct.json", data);
+		// const data = JSON.stringify(searchData, null, 2);
+		// fs.writeFileSync("originalProduct.json", data);
 
 		return searchData;
 	} catch (error: any) {
@@ -107,7 +144,7 @@ export async function scrapeProducts(searchQuery: string) {
 export async function scrapeAndUpdateOneProduct(product: any) {
 	if (!product) return;
 
-	const browser: Browser = await puppeteer.launch({ headless: false });
+	const browser: Browser = await puppeteer.launch({ headless: 'new' });
 	try {
 		const page = await browser.newPage();
 		await page.goto(product.url);
@@ -143,8 +180,8 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 			return {seller, sellerPfp, sold, rating, scrapedImageUrls}
 		});
 
-		const data = JSON.stringify(updatedProduct, null, 2);
-		fs.writeFileSync("updatedProducts.json", data);
+		// const data = JSON.stringify(updatedProduct, null, 2);
+		// fs.writeFileSync("updatedProducts.json", data);
 
 		return updatedProduct;
 	} catch (error: any) {

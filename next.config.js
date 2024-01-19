@@ -5,12 +5,12 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-      serverComponentsExternalPackages: ['mongoose']
-    },
-    images: {
-      domains: ['i.ebayimg.com']
-    }
-  }
-  
-  module.exports = nextConfig
+  experimental: {
+    serverComponentsExternalPackages: ['mongoose', 'chrome-aws-lambda']
+  },
+  images: {
+    domains: ['i.ebayimg.com']
+  },
+}
+
+module.exports = nextConfig
