@@ -1,8 +1,15 @@
 "use server";
 
 const fs = require("fs");
-const puppeteer = require("puppeteer");
+// const puppeteer = require("puppeteer");
 import { Browser } from "puppeteer";
+
+interface Chrome {
+	args: any[]; // Change 'any' to the actual type of 'args' if possible,
+	defaultViewport: any,
+	executablePath: any,
+
+}
 
 // BrightData proxy configuration
 const username = String(process.env.BRIGHT_DATA_USERNAME);
@@ -30,30 +37,48 @@ const options = {
 // 	puppeteer = require("puppeteer")
 // }
 
-import chromium from 'chrome-aws-lambda'
+// import chromium from 'chrome-aws-lambda'
+// import AWS from 'aws-sdk'
 
-async function getBrowserInstance() {
-	// const chromium = require('chrome-aws-lambda')
-	const executablePath = await chromium.executablePath
+// const S3 = new AWS.S3({
+// 	credentials: {
+// 		accessKeyId: process.env.S3ACCESS_KEY || '',
+// 		secretAccessKey: process.env.S3SECRET_KEY || ''
+// 	}
+// })
 
-	if (!executablePath){
-		// run locally
-		const puppeteer = require('puppeteer')
-		return puppeteer.launch({
-			args: chromium.args,
-			headless: 'new',
-			ignoreHTTPSErrors: true,
-			ignoreDefaultArgs: ['--disable-extensions']
-		})
-	}
+// async function getBrowserInstance() {
+// 	// const chromium = require('chrome-aws-lambda')
+// 	const executablePath = await chromium.executablePath
 
-	return chromium.puppeteer.launch({
-		args: chromium.args,
-		defaultViewport: chromium.defaultViewport,
-		executablePath: await chromium.executablePath,
-		headless: true,
-		ignoreHTTPSErrors: true
-	})
+// 	if (!executablePath){
+// 		// run locally
+// 		const puppeteer = require('puppeteer')
+// 		return puppeteer.launch({
+// 			args: chromium.args,
+// 			headless: 'new',
+// 			ignoreHTTPSErrors: true,
+// 			ignoreDefaultArgs: ['--disable-extensions']
+// 		})
+// 	}
+
+// 	return chromium.puppeteer.launch({
+// 		args: chromium.args,
+// 		defaultViewport: chromium.defaultViewport,
+// 		executablePath: await chromium.executablePath,
+// 		headless: true,
+// 		ignoreHTTPSErrors: true
+// 	})
+// }
+
+let chrome = {}
+let puppeteer: any;
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+	chrome = require('chrome-aws-lambda')
+	puppeteer = require('puppeteer-core')
+} else {
+	puppeteer = require('puppeteer')
 }
 
 export async function scrapeProducts(searchQuery: string) {
@@ -64,76 +89,108 @@ export async function scrapeProducts(searchQuery: string) {
 	// })
 
 	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
-	const browser = await getBrowserInstance()
+
+	// const browser = await getBrowserInstance()
+	// const params = {
+	// 	Bucket: 'aws-s3-puppeteer',
+	// 	Key: 'product/id' + Date.now(),
+	// 	Body: "adasdsadsa"
+	// }
+	// S3.upload(params, (error: any, data: any) => {
+	// 	if (error) {
+	// 		console.log(error)
+	// 	}
+	// })
+
+	
+	let options: any = {}
+	if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+		options = {
+			args: (chrome as Chrome).args,
+			defaultViewport: (chrome as Chrome).defaultViewport,
+			executablePath: await (chrome as Chrome).executablePath,
+			headless: true,
+			ignoreHTTPSErrors: true
+		}
+	}
+
+	let browser = await puppeteer.launch(options)
 	try {
 		const page = await browser.newPage();
-		await page.goto("https://www.ebay.com/");
-		await page.waitForSelector("#gh-ac");
-		await page.type("#gh-ac", searchQuery);
-		await page.click('input[value="Search"]');
-		await page.waitForNavigation();
 
-		var searchData = await page.evaluate(async () => {
-			var listOfProducts: any[] = [];
-			function delay(ms: number) {
-				return new Promise((resolve) => {
-					setTimeout(resolve, ms);
-				});
-			}
+		// TEST
+		await page.goto('https://www.google.com')	
+		console.log(await page.title())	
+		return ['dog1', 'dog2']
+		// TEST
 
-			const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
-			for (const item of items) {
-				item.scrollIntoView();
-				await delay(50);
-			}
+		// await page.goto("https://www.ebay.com/");
+		// await page.waitForSelector("#gh-ac");
+		// await page.type("#gh-ac", searchQuery);
+		// await page.click('input[value="Search"]');
+		// await page.waitForNavigation();
 
-			items.map(async (item) => {
-				listOfProducts.push({
-					title: item
-						.querySelector(".s-item__title")
-						?.textContent?.trim(),
-					price: parseFloat(
-						item
-							.querySelector("span.s-item__price")
-							?.textContent?.trim()
-							.replace("$", "") || ""
-					),
-					seller: "",
-					sellerPfp: "",
-					sold: 0,
-					rating: "",
-					condition: item
-						.querySelector("span.SECONDARY_INFO")
-						?.textContent?.trim(),
-					freeShipping:
-						item
-							.querySelector("span.s-item__shipping")
-							?.textContent?.trim() === "Free shipping",
-					freeReturns:
-						item
-							.querySelector("span.s-item__free-returns")
-							?.textContent?.trim() === "Free returns",
-					discount:
-						item
-							.querySelector("span.NEGATIVE")
-							?.textContent?.trim() || false,
-					url: item
-						.querySelector("a.s-item__link")
-						?.getAttribute("href"),
-					imageUrl: item
-						.querySelector("div.s-item__image img")
-						?.getAttribute("src"),
-					imageUrls: [],
-				});
-			});
+		// var searchData = await page.evaluate(async () => {
+		// 	var listOfProducts: any[] = [];
+		// 	function delay(ms: number) {
+		// 		return new Promise((resolve) => {
+		// 			setTimeout(resolve, ms);
+		// 		});
+		// 	}
 
-			return listOfProducts;
-		});
+		// 	const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
+		// 	for (const item of items) {
+		// 		item.scrollIntoView();
+		// 		await delay(50);
+		// 	}
 
-		// const data = JSON.stringify(searchData, null, 2);
-		// fs.writeFileSync("originalProduct.json", data);
+		// 	items.map(async (item) => {
+		// 		listOfProducts.push({
+		// 			title: item
+		// 				.querySelector(".s-item__title")
+		// 				?.textContent?.trim(),
+		// 			price: parseFloat(
+		// 				item
+		// 					.querySelector("span.s-item__price")
+		// 					?.textContent?.trim()
+		// 					.replace("$", "") || ""
+		// 			),
+		// 			seller: "",
+		// 			sellerPfp: "",
+		// 			sold: 0,
+		// 			rating: "",
+		// 			condition: item
+		// 				.querySelector("span.SECONDARY_INFO")
+		// 				?.textContent?.trim(),
+		// 			freeShipping:
+		// 				item
+		// 					.querySelector("span.s-item__shipping")
+		// 					?.textContent?.trim() === "Free shipping",
+		// 			freeReturns:
+		// 				item
+		// 					.querySelector("span.s-item__free-returns")
+		// 					?.textContent?.trim() === "Free returns",
+		// 			discount:
+		// 				item
+		// 					.querySelector("span.NEGATIVE")
+		// 					?.textContent?.trim() || false,
+		// 			url: item
+		// 				.querySelector("a.s-item__link")
+		// 				?.getAttribute("href"),
+		// 			imageUrl: item
+		// 				.querySelector("div.s-item__image img")
+		// 				?.getAttribute("src"),
+		// 			imageUrls: [],
+		// 		});
+		// 	});
 
-		return searchData;
+		// 	return listOfProducts;
+		// });
+
+		// // const data = JSON.stringify(searchData, null, 2);
+		// // fs.writeFileSync("originalProduct.json", data);
+
+		// return searchData;
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
