@@ -110,7 +110,8 @@ export async function scrapeProducts(searchQuery: string) {
 			defaultViewport: (chrome as Chrome).defaultViewport,
 			executablePath: await (chrome as Chrome).executablePath,
 			headless: true,
-			ignoreHTTPSErrors: true
+			ignoreHTTPSErrors: true,
+			ignoreDefaultArgs: ['--disable-extensions'],
 		}
 	} else {
 		options = { headless: 'new' }
