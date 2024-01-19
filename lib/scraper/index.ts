@@ -4,11 +4,11 @@ const fs = require("fs");
 // const puppeteer = require("puppeteer");
 import { Browser } from "puppeteer";
 
-interface Chrome {
-	args: any[]; // Change 'any' to the actual type of 'args' if possible,
-	defaultViewport: any,
-	executablePath: any,
-}
+// interface Chrome {
+// 	args: any[]; // Change 'any' to the actual type of 'args' if possible,
+// 	defaultViewport: any,
+// 	executablePath: any,
+// }
 
 // BrightData proxy configuration
 const username = String(process.env.BRIGHT_DATA_USERNAME);
@@ -29,14 +29,7 @@ const session_id = (1000000 * Math.random()) | 0;
 // let chrome = {}
 // let puppeteer: any;
 
-// if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-// 	chrome = require("chrome-aws-lambda")
-// 	puppeteer = require("puppeteer-core")
-// } else {
-// 	puppeteer = require("puppeteer")
-// }
-
-// import chromium from 'chrome-aws-lambda'
+import chromium from 'chrome-aws-lambda'
 // import AWS from 'aws-sdk'
 
 // const S3 = new AWS.S3({
@@ -46,39 +39,40 @@ const session_id = (1000000 * Math.random()) | 0;
 // 	}
 // })
 
-// async function getBrowserInstance() {
-// 	// const chromium = require('chrome-aws-lambda')
-// 	const executablePath = await chromium.executablePath
+async function getBrowserInstance() {
+	// const chromium = require('chrome-aws-lambda')
+	const executablePath = await chromium.executablePath
 
-// 	if (!executablePath){
-// 		// run locally
-// 		const puppeteer = require('puppeteer')
-// 		return puppeteer.launch({
-// 			args: chromium.args,
-// 			headless: 'new',
-// 			ignoreHTTPSErrors: true,
-// 			ignoreDefaultArgs: ['--disable-extensions']
-// 		})
-// 	}
+	if (!executablePath){
+		// run locally
+		const puppeteer = require('puppeteer')
+		return puppeteer.launch({
+			args: chromium.args,
+			headless: 'new',
+			ignoreHTTPSErrors: true,
+			ignoreDefaultArgs: ['--disable-extensions']
+		})
+	}
 
-// 	return chromium.puppeteer.launch({
-// 		args: chromium.args,
-// 		defaultViewport: chromium.defaultViewport,
-// 		executablePath: await chromium.executablePath,
-// 		headless: true,
-// 		ignoreHTTPSErrors: true
-// 	})
-// }
-
-let chrome = {}
-let puppeteer: any;
-
-if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-	chrome = require('chrome-aws-lambda')
-	puppeteer = require('puppeteer-core')
-} else {
-	puppeteer = require('puppeteer')
+	return chromium.puppeteer.launch({
+		args: chromium.args,
+		defaultViewport: chromium.defaultViewport,
+		executablePath: await chromium.executablePath,
+		headless: true,
+		ignoreHTTPSErrors: true,
+		ignoreDefaultArgs: ['--disable-extensions']
+	})
 }
+
+// let chrome = {}
+// let puppeteer: any;
+
+// if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+// 	chrome = require('chrome-aws-lambda')
+// 	puppeteer = require('puppeteer-core')
+// } else {
+// 	puppeteer = require('puppeteer')
+// }
 
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
@@ -102,27 +96,21 @@ export async function scrapeProducts(searchQuery: string) {
 	// })
 
 	
-	let options: any = {}
-	if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-		options = {
-			args: (chrome as Chrome).args,
-			defaultViewport: (chrome as Chrome).defaultViewport,
-			executablePath: await (chrome as Chrome).executablePath,
-			headless: true,
-			ignoreHTTPSErrors: true,
-			ignoreDefaultArgs: ['--disable-extensions'],
-		}
-	} else {
-		options = { headless: 'new' }
-	}
+	// let options: any = {}
+	// if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+	// 	options = {
+	// 		args: (chrome as Chrome).args,
+	// 		defaultViewport: (chrome as Chrome).defaultViewport,
+	// 		executablePath: await (chrome as Chrome).executablePath,
+	// 		headless: true,
+	// 		ignoreHTTPSErrors: true,
+	// 		ignoreDefaultArgs: ['--disable-extensions'],
+	// 	}
+	// } else {
+	// 	options = { headless: 'new' }
+	// }
 
-	let browser = await puppeteer.launch({
-		args: ['--no-sandbox'],
-		defaultViewport: (chrome as Chrome).defaultViewport,
-		executablePath: await (chrome as Chrome).executablePath,
-		headless: true,
-		ignoreHTTPSErrors: true,
-	})
+	let browser = await getBrowserInstance()
 	try {
 		const page = await browser.newPage();
 
@@ -210,7 +198,8 @@ export async function scrapeProducts(searchQuery: string) {
 export async function scrapeAndUpdateOneProduct(product: any) {
 	if (!product) return;
 
-	const browser: Browser = await puppeteer.launch({ headless: 'new' });
+	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
+	const browser: Browser = await getBrowserInstance();
 	try {
 		const page = await browser.newPage();
 		await page.goto(product.url);
