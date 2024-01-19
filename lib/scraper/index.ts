@@ -8,7 +8,6 @@ interface Chrome {
 	args: any[]; // Change 'any' to the actual type of 'args' if possible,
 	defaultViewport: any,
 	executablePath: any,
-
 }
 
 // BrightData proxy configuration
@@ -117,7 +116,13 @@ export async function scrapeProducts(searchQuery: string) {
 		options = { headless: 'new' }
 	}
 
-	let browser = await puppeteer.launch(options)
+	let browser = await puppeteer.launch({
+		args: ['--no-sandbox'],
+		defaultViewport: (chrome as Chrome).defaultViewport,
+		executablePath: await (chrome as Chrome).executablePath,
+		headless: true,
+		ignoreHTTPSErrors: true,
+	})
 	try {
 		const page = await browser.newPage();
 
