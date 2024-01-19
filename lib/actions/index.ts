@@ -14,7 +14,7 @@ export async function scrapeAndStoreProduct(searchQuery: string) {
 		var scrapedProducts = await scrapeProducts(searchQuery);
 		if (!scrapedProducts) return;
 
-		scrapedProducts.forEach(async (product) => {
+		scrapedProducts.forEach(async (product: any) => {
 			const newProduct = await Product.findOneAndUpdate(
 				{ url: product.url },
 				product,
