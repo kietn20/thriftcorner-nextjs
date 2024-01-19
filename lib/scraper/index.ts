@@ -121,7 +121,7 @@ export async function scrapeProducts(searchQuery: string) {
 		// TEST
 		await page.goto('https://www.google.com')	
 		console.log(await page.title())	
-		return ['dog1', 'dog2']
+		return [{url: 'https://www.google.com', title: 'dog1'}, {url: 'https://www.google2.com', title: 'dog2'}]
 		// TEST
 
 		// await page.goto("https://www.ebay.com/");
