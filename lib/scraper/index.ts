@@ -41,8 +41,9 @@ async function getBrowserInstance() {
 		const puppeteer = require('puppeteer')
 		return puppeteer.launch({
 			args: chromium.args,
-			headless: true,
-			ignoreHTTPSErrors: true
+			headless: 'new',
+			ignoreHTTPSErrors: true,
+			ignoreDefaultArgs: ['--disable-extensions']
 		})
 	}
 
