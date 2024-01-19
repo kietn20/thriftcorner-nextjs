@@ -17,13 +17,13 @@ const DMST = DM_Serif_Text({
 	variable: "--font-DMST",
 });
 
-const info: any = []
+// const info: any = []
 
 const ProductDetails = async ({ params: { id } }: Props) => {
 	let product = await getProductById(id);
 	if (!product) redirect("/");
 
-	// const info = await scrapeAndUpdateOneProduct(product);
+	const info = await scrapeAndUpdateOneProduct(product);
 	return (
 		<div className="m-auto mt-24 w-[1500px] flex justify-center gap-20 p-10">
 			<div className="">

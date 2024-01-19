@@ -1,7 +1,7 @@
 "use server";
 
 const fs = require("fs");
-// const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer");
 import { Browser } from "puppeteer";
 
 // interface Chrome {
@@ -29,7 +29,7 @@ const session_id = (1000000 * Math.random()) | 0;
 // let chrome = {}
 // let puppeteer: any;
 
-import chromium from 'chrome-aws-lambda'
+// import chromium from 'chrome-aws-lambda'
 // import AWS from 'aws-sdk'
 
 // const S3 = new AWS.S3({
@@ -39,30 +39,30 @@ import chromium from 'chrome-aws-lambda'
 // 	}
 // })
 
-async function getBrowserInstance() {
-	// const chromium = require('chrome-aws-lambda')
-	const executablePath = await chromium.executablePath
+// async function getBrowserInstance() {
+// 	// const chromium = require('chrome-aws-lambda')
+// 	const executablePath = await chromium.executablePath
 
-	if (!executablePath){
-		// run locally
-		const puppeteer = require('puppeteer')
-		return puppeteer.launch({
-			args: chromium.args,
-			headless: 'new',
-			ignoreHTTPSErrors: true,
-			ignoreDefaultArgs: ['--disable-extensions']
-		})
-	}
+// 	if (!executablePath){
+// 		// run locally
+// 		const puppeteer = require('puppeteer')
+// 		return puppeteer.launch({
+// 			args: chromium.args,
+// 			headless: 'new',
+// 			ignoreHTTPSErrors: true,
+// 			ignoreDefaultArgs: ['--disable-extensions']
+// 		})
+// 	}
 
-	return chromium.puppeteer.launch({
-		args: chromium.args,
-		defaultViewport: chromium.defaultViewport,
-		executablePath: await chromium.executablePath,
-		headless: true,
-		ignoreHTTPSErrors: true,
-		ignoreDefaultArgs: ['--disable-extensions']
-	})
-}
+// 	return chromium.puppeteer.launch({
+// 		args: chromium.args,
+// 		defaultViewport: chromium.defaultViewport,
+// 		executablePath: await chromium.executablePath,
+// 		headless: true,
+// 		ignoreHTTPSErrors: true,
+// 		ignoreDefaultArgs: ['--disable-extensions']
+// 	})
+// }
 
 // let chrome = {}
 // let puppeteer: any;
@@ -110,7 +110,8 @@ export async function scrapeProducts(searchQuery: string) {
 	// 	options = { headless: 'new' }
 	// }
 
-	let browser = await getBrowserInstance()
+	// let browser = await getBrowserInstance()
+	const browser: Browser = await puppeteer.launch({ headless: 'new' });
 	try {
 		const page = await browser.newPage();
 
@@ -198,8 +199,8 @@ export async function scrapeProducts(searchQuery: string) {
 export async function scrapeAndUpdateOneProduct(product: any) {
 	if (!product) return;
 
-	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
-	const browser: Browser = await getBrowserInstance();
+	const browser: Browser = await puppeteer.launch({ headless: 'new' });
+	// const browser: Browser = await getBrowserInstance();
 	try {
 		const page = await browser.newPage();
 		await page.goto(product.url);
