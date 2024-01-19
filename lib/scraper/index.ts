@@ -17,15 +17,15 @@ const password = String(process.env.BRIGHT_DATA_PASSWORD);
 const auth = `${username}:${password}`;
 const port = 22225;
 const session_id = (1000000 * Math.random()) | 0;
-const options = {
-	auth: {
-		username: `${username}-session-${session_id}`,
-		password,
-	},
-	host: "brd.superproxy.io:22225",
-	port,
-	rejectUnauthorized: false,
-};
+// const options = {
+// 	auth: {
+// 		username: `${username}-session-${session_id}`,
+// 		password,
+// 	},
+// 	host: "brd.superproxy.io:22225",
+// 	port,
+// 	rejectUnauthorized: false,
+// };
 
 // let chrome = {}
 // let puppeteer: any;
@@ -112,6 +112,8 @@ export async function scrapeProducts(searchQuery: string) {
 			headless: true,
 			ignoreHTTPSErrors: true
 		}
+	} else {
+		options = { headless: 'new' }
 	}
 
 	let browser = await puppeteer.launch(options)
@@ -119,78 +121,78 @@ export async function scrapeProducts(searchQuery: string) {
 		const page = await browser.newPage();
 
 		// TEST
-		await page.goto('https://www.google.com')	
-		console.log(await page.title())	
-		return [{url: 'https://www.google.com', title: 'dog1'}, {url: 'https://www.google2.com', title: 'dog2'}]
+		// await page.goto('https://www.google.com')	
+		// console.log(await page.title())	
+		// return [{url: 'https://www.google.com', title: 'dog1'}, {url: 'https://www.google2.com', title: 'dog2'}]
 		// TEST
 
-		// await page.goto("https://www.ebay.com/");
-		// await page.waitForSelector("#gh-ac");
-		// await page.type("#gh-ac", searchQuery);
-		// await page.click('input[value="Search"]');
-		// await page.waitForNavigation();
+		await page.goto("https://www.ebay.com/");
+		await page.waitForSelector("#gh-ac");
+		await page.type("#gh-ac", searchQuery);
+		await page.click('input[value="Search"]');
+		await page.waitForNavigation();
 
-		// var searchData = await page.evaluate(async () => {
-		// 	var listOfProducts: any[] = [];
-		// 	function delay(ms: number) {
-		// 		return new Promise((resolve) => {
-		// 			setTimeout(resolve, ms);
-		// 		});
-		// 	}
+		var searchData = await page.evaluate(async () => {
+			var listOfProducts: any[] = [];
+			function delay(ms: number) {
+				return new Promise((resolve) => {
+					setTimeout(resolve, ms);
+				});
+			}
 
-		// 	const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
-		// 	for (const item of items) {
-		// 		item.scrollIntoView();
-		// 		await delay(50);
-		// 	}
+			const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
+			for (const item of items) {
+				item.scrollIntoView();
+				await delay(50);
+			}
 
-		// 	items.map(async (item) => {
-		// 		listOfProducts.push({
-		// 			title: item
-		// 				.querySelector(".s-item__title")
-		// 				?.textContent?.trim(),
-		// 			price: parseFloat(
-		// 				item
-		// 					.querySelector("span.s-item__price")
-		// 					?.textContent?.trim()
-		// 					.replace("$", "") || ""
-		// 			),
-		// 			seller: "",
-		// 			sellerPfp: "",
-		// 			sold: 0,
-		// 			rating: "",
-		// 			condition: item
-		// 				.querySelector("span.SECONDARY_INFO")
-		// 				?.textContent?.trim(),
-		// 			freeShipping:
-		// 				item
-		// 					.querySelector("span.s-item__shipping")
-		// 					?.textContent?.trim() === "Free shipping",
-		// 			freeReturns:
-		// 				item
-		// 					.querySelector("span.s-item__free-returns")
-		// 					?.textContent?.trim() === "Free returns",
-		// 			discount:
-		// 				item
-		// 					.querySelector("span.NEGATIVE")
-		// 					?.textContent?.trim() || false,
-		// 			url: item
-		// 				.querySelector("a.s-item__link")
-		// 				?.getAttribute("href"),
-		// 			imageUrl: item
-		// 				.querySelector("div.s-item__image img")
-		// 				?.getAttribute("src"),
-		// 			imageUrls: [],
-		// 		});
-		// 	});
+			items.map(async (item) => {
+				listOfProducts.push({
+					title: item
+						.querySelector(".s-item__title")
+						?.textContent?.trim(),
+					price: parseFloat(
+						item
+							.querySelector("span.s-item__price")
+							?.textContent?.trim()
+							.replace("$", "") || ""
+					),
+					seller: "",
+					sellerPfp: "",
+					sold: 0,
+					rating: "",
+					condition: item
+						.querySelector("span.SECONDARY_INFO")
+						?.textContent?.trim(),
+					freeShipping:
+						item
+							.querySelector("span.s-item__shipping")
+							?.textContent?.trim() === "Free shipping",
+					freeReturns:
+						item
+							.querySelector("span.s-item__free-returns")
+							?.textContent?.trim() === "Free returns",
+					discount:
+						item
+							.querySelector("span.NEGATIVE")
+							?.textContent?.trim() || false,
+					url: item
+						.querySelector("a.s-item__link")
+						?.getAttribute("href"),
+					imageUrl: item
+						.querySelector("div.s-item__image img")
+						?.getAttribute("src"),
+					imageUrls: [],
+				});
+			});
 
-		// 	return listOfProducts;
-		// });
+			return listOfProducts;
+		});
 
 		// // const data = JSON.stringify(searchData, null, 2);
 		// // fs.writeFileSync("originalProduct.json", data);
 
-		// return searchData;
+		return searchData;
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {

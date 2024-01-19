@@ -3,7 +3,7 @@ import CarouselComponent from "@/components/CarouselComponent";
 import { getProductById } from "@/lib/actions";
 import { scrapeAndUpdateOneProduct } from "@/lib/scraper";
 import Image from "next/image";
-import { redirect} from "next/navigation";
+import { redirect } from "next/navigation";
 import React from "react";
 
 type Props = {
