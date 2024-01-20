@@ -47,19 +47,19 @@ chromium.setHeadlessMode = true;
 chromium.setGraphicsMode = false; 
 async function getBrowserInstance() {
 	// const chromium = require('chrome-aws-lambda')
-	const executablePath = await chromium.executablePath()
-	console.log(`-----Executable: ${executablePath}`)
-	if (!executablePath){
-		// run locally
-		console.log('RUNNING LOCALLY !!!')
-		const puppeteer = require('puppeteer')
-		return puppeteer.launch({
-			args: chromium.args,
-			headless: 'new',
-			ignoreHTTPSErrors: true,
-			ignoreDefaultArgs: ['--disable-extensions']
-		})
-	}
+	// const executablePath = await chromium.executablePath()
+	// console.log(`-----Executable: ${executablePath}`)
+	// if (!executablePath){
+	// 	// run locally
+	// 	console.log('RUNNING LOCALLY !!!')
+	// 	const puppeteer = require('puppeteer')
+	// 	return puppeteer.launch({
+	// 		args: chromium.args,
+	// 		headless: 'new',
+	// 		ignoreHTTPSErrors: true,
+	// 		ignoreDefaultArgs: ['--disable-extensions']
+	// 	})
+	// }
 
 	// return chromium.puppeteer.launch({
 	// return puppeteer.launch({
@@ -70,6 +70,16 @@ async function getBrowserInstance() {
 	// 	ignoreHTTPSErrors: chromium.headless,
 	// 	ignoreDefaultArgs: ['--disable-extensions']
 	// })
+	// console.log('RUNNING LOCALLY !!!')
+	// const puppeteer = require('puppeteer')
+	// return puppeteer.launch({
+	// 	args: chromium.args,
+	// 	headless: 'new',
+	// 	ignoreHTTPSErrors: true,
+	// 	ignoreDefaultArgs: ['--disable-extensions']
+	// })
+
+
 	console.log('RUNNING ON PRODUCTION !!!')
 	return puppeteer.launch({
 		args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
