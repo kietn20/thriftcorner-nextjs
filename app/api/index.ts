@@ -47,6 +47,7 @@ const session_id = (1000000 * Math.random()) | 0;
 const chromium = require("@sparticuz/chromium-min");
 chromium.setHeadlessMode = true;
 chromium.setGraphicsMode = false; 
+
 async function getBrowserInstance() {
 	// const chromium = require('chrome-aws-lambda')
 	// const executablePath = await chromium.executablePath()
@@ -72,7 +73,7 @@ async function getBrowserInstance() {
 			// 	ignoreHTTPSErrors: chromium.headless,
 			// 	ignoreDefaultArgs: ['--disable-extensions']
 			// })
-			
+	await chromium.font( "https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf" );
 	const puppeteer = require("puppeteer-core");
 	console.log('RUNNING ON PRODUCTION !!!')
 	return await puppeteer.launch({
