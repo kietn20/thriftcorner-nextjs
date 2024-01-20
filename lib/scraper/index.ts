@@ -1,8 +1,8 @@
 "use server";
 
 const fs = require("fs");
-const puppeteer = require("puppeteer-core");
-import { Browser } from "puppeteer";
+// const puppeteer = require("puppeteer-core");
+// import { Browser } from "puppeteer";
 
 // interface Chrome {
 // 	args: any[]; // Change 'any' to the actual type of 'args' if possible,
@@ -40,13 +40,17 @@ const session_id = (1000000 * Math.random()) | 0;
 // })
 
 // import chromium from 'chrome-aws-lambda'
+import puppeteer, { Browser } from "puppeteer-core";
 import chromium from '@sparticuz/chromium-min';
+chromium.setHeadlessMode = true;
+chromium.setGraphicsMode = false; 
 async function getBrowserInstance() {
 	// const chromium = require('chrome-aws-lambda')
 	const executablePath = await chromium.executablePath()
 	console.log(`-----Executable: ${executablePath}`)
 	if (!executablePath){
 		// run locally
+		console.log('RUNNING LOCALLY !!!')
 		const puppeteer = require('puppeteer')
 		return puppeteer.launch({
 			args: chromium.args,
@@ -65,11 +69,12 @@ async function getBrowserInstance() {
 	// 	ignoreHTTPSErrors: chromium.headless,
 	// 	ignoreDefaultArgs: ['--disable-extensions']
 	// })
+	console.log('RUNNING ON PRODUCTION !!!')
 	return puppeteer.launch({
 		args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
 		defaultViewport: chromium.defaultViewport,
 		executablePath: await chromium.executablePath(
-		  `https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar`
+		  `https://github.com/Sparticuz/chromium/releases/download/v119.0.0/chromium-v119.0.0-pack.tar`
 		),
 		headless: chromium.headless,
 		ignoreHTTPSErrors: true,
@@ -165,7 +170,7 @@ export async function scrapeProducts(searchQuery: string) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
 		console.log("done");
-		await browser.close();
+		browser.close();
 	}
 }
 
