@@ -50,7 +50,7 @@ chromium.setGraphicsMode = false;
 async function getBrowserInstance() {
 	// const chromium = require('chrome-aws-lambda')
 	// const executablePath = await chromium.executablePath()
-	console.log(`-----Executable: ${chromium.executablePath}`)
+	// console.log(`-----Executable: ${chromium.executablePath}`)
 	if (process.env.NODE_ENV === 'development'){
 		// run locally
 		console.log('RUNNING LOCALLY !!!')
@@ -75,10 +75,10 @@ async function getBrowserInstance() {
 			
 	const puppeteer = require("puppeteer-core");
 	console.log('RUNNING ON PRODUCTION !!!')
-	return puppeteer.launch({
+	return await chromium.puppeteer.launch({
 		args: chromium.args,
 		defaultViewport: chromium.defaultViewport,
-		executablePath: await chromium.executablePath(),
+		executablePath: await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"),
 		headless: 'new',
 		ignoreHTTPSErrors: true,
 	});
