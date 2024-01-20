@@ -80,7 +80,7 @@ async function getBrowserInstance() {
 	return await puppeteer.launch({
 		args: chromium.args,
 		defaultViewport: chromium.defaultViewport,
-		executablePath: await chromium.executablePath('chromium-v119.0.2-pack.tar'),
+		executablePath: await chromium.executablePath(),
 		headless: 'new',
 		ignoreHTTPSErrors: true,
 	});
