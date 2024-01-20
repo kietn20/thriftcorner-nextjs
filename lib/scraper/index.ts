@@ -42,7 +42,7 @@ const session_id = (1000000 * Math.random()) | 0;
 import chromium from 'chrome-aws-lambda'
 async function getBrowserInstance() {
 	// const chromium = require('chrome-aws-lambda')
-	const executablePath = await chromium.executablePath()
+	const executablePath = await chromium.executablePath
 	console.log(`-----Executable: ${executablePath}`)
 	if (!executablePath){
 		// run locally
