@@ -84,7 +84,7 @@ async function getBrowserInstance() {
 	return puppeteer.launch({
 		args: chromium.args,
 		defaultViewport: chromium.defaultViewport,
-		executablePath: await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar'),
+		executablePath: await chromium.executablePath('/opt/chromium'),
 		headless: chromium.headless,
 		ignoreHTTPSErrors: true,
 	});
@@ -97,77 +97,97 @@ export async function scrapeProducts(searchQuery: string) {
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
 	// })
 
-	const browser = await getBrowserInstance()
+	// const browser = await getBrowserInstance()
 	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
+	// try {
+	// 	const page = await browser.newPage();
+	// 	await page.goto("https://www.ebay.com/");
+	// 	await page.waitForSelector("#gh-ac");
+	// 	await page.type("#gh-ac", searchQuery);
+	// 	await page.click('input[value="Search"]');
+	// 	await page.waitForNavigation();
+
+	// 	var searchData = await page.evaluate(async () => {
+	// 		var listOfProducts: any[] = [];
+	// 		function delay(ms: number) {
+	// 			return new Promise((resolve) => {
+	// 				setTimeout(resolve, ms);
+	// 			});
+	// 		}
+
+	// 		const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
+	// 		for (const item of items) {
+	// 			item.scrollIntoView();
+	// 			await delay(50);
+	// 		}
+
+	// 		items.map(async (item) => {
+	// 			listOfProducts.push({
+	// 				title: item
+	// 					.querySelector(".s-item__title")
+	// 					?.textContent?.trim(),
+	// 				price: parseFloat(
+	// 					item
+	// 						.querySelector("span.s-item__price")
+	// 						?.textContent?.trim()
+	// 						.replace("$", "") || ""
+	// 				),
+	// 				seller: "",
+	// 				sellerPfp: "",
+	// 				sold: 0,
+	// 				rating: "",
+	// 				condition: item
+	// 					.querySelector("span.SECONDARY_INFO")
+	// 					?.textContent?.trim(),
+	// 				freeShipping:
+	// 					item
+	// 						.querySelector("span.s-item__shipping")
+	// 						?.textContent?.trim() === "Free shipping",
+	// 				freeReturns:
+	// 					item
+	// 						.querySelector("span.s-item__free-returns")
+	// 						?.textContent?.trim() === "Free returns",
+	// 				discount:
+	// 					item
+	// 						.querySelector("span.NEGATIVE")
+	// 						?.textContent?.trim() || false,
+	// 				url: item
+	// 					.querySelector("a.s-item__link")
+	// 					?.getAttribute("href"),
+	// 				imageUrl: item
+	// 					.querySelector("div.s-item__image img")
+	// 					?.getAttribute("src"),
+	// 				imageUrls: [],
+	// 			});
+	// 		});
+
+	// 		return listOfProducts;
+	// 	});
+	// 	// // const data = JSON.stringify(searchData, null, 2);
+	// 	// // fs.writeFileSync("originalProduct.json", data);
+		
+	// 	await page.close();
+	// 	return searchData;
+	const browser = await puppeteer.launch({
+	  args: chromium.args,
+	  defaultViewport: chromium.defaultViewport,
+	  executablePath: await chromium.executablePath(
+		"https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
+	  ),
+	  headless: chromium.headless,
+	  ignoreHTTPSErrors: true,
+	});
 	try {
+	
 		const page = await browser.newPage();
-		await page.goto("https://www.ebay.com/");
-		await page.waitForSelector("#gh-ac");
-		await page.type("#gh-ac", searchQuery);
-		await page.click('input[value="Search"]');
-		await page.waitForNavigation();
-
-		var searchData = await page.evaluate(async () => {
-			var listOfProducts: any[] = [];
-			function delay(ms: number) {
-				return new Promise((resolve) => {
-					setTimeout(resolve, ms);
-				});
-			}
-
-			const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
-			for (const item of items) {
-				item.scrollIntoView();
-				await delay(50);
-			}
-
-			items.map(async (item) => {
-				listOfProducts.push({
-					title: item
-						.querySelector(".s-item__title")
-						?.textContent?.trim(),
-					price: parseFloat(
-						item
-							.querySelector("span.s-item__price")
-							?.textContent?.trim()
-							.replace("$", "") || ""
-					),
-					seller: "",
-					sellerPfp: "",
-					sold: 0,
-					rating: "",
-					condition: item
-						.querySelector("span.SECONDARY_INFO")
-						?.textContent?.trim(),
-					freeShipping:
-						item
-							.querySelector("span.s-item__shipping")
-							?.textContent?.trim() === "Free shipping",
-					freeReturns:
-						item
-							.querySelector("span.s-item__free-returns")
-							?.textContent?.trim() === "Free returns",
-					discount:
-						item
-							.querySelector("span.NEGATIVE")
-							?.textContent?.trim() || false,
-					url: item
-						.querySelector("a.s-item__link")
-						?.getAttribute("href"),
-					imageUrl: item
-						.querySelector("div.s-item__image img")
-						?.getAttribute("src"),
-					imageUrls: [],
-				});
-			});
-
-			return listOfProducts;
-		});
-		// // const data = JSON.stringify(searchData, null, 2);
-		// // fs.writeFileSync("originalProduct.json", data);
+	
+		await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
+	
+		console.log("Chromium:", await browser.version());
+		console.log("Page Title:", await page.title());
 		
 		await page.close();
-		return searchData;
+		return [{url: 'www.google1.com', title: 'dog1'}, {url: 'www.google2.com', title: 'dog2'}]
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
