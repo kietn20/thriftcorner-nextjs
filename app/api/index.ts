@@ -44,7 +44,7 @@ const session_id = (1000000 * Math.random()) | 0;
 // const puppeteer = require("puppeteer-core");
 // import chromium from '@sparticuz/chromium-min';
 
-const chromium = require("@sparticuz/chromium-min");
+const chromium = require("@sparticuz/chromium");
 chromium.setHeadlessMode = true;
 chromium.setGraphicsMode = false; 
 
@@ -74,14 +74,14 @@ async function getBrowserInstance() {
 			// 	ignoreDefaultArgs: ['--disable-extensions']
 			// })
 	// process.env.HOME = '/tmp';
-	await chromium.font("https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf");
+	// await chromium.font("https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf");
 	const puppeteer = require("puppeteer-core");
 	console.log('RUNNING ON PRODUCTION !!!')
 	return await puppeteer.launch({
 		args: chromium.args,
 		defaultViewport: chromium.defaultViewport,
 		executablePath: await chromium.executablePath(),
-		headless: 'new',
+		headless: chromium.headless,
 		ignoreHTTPSErrors: true,
 	});
 }
