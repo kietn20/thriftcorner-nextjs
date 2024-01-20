@@ -40,55 +40,52 @@ const session_id = (1000000 * Math.random()) | 0;
 // })
 
 // import chromium from 'chrome-aws-lambda'
-import puppeteer from "puppeteer-core";
+// import puppeteer from "puppeteer-core";
 // const puppeteer = require("puppeteer-core");
-import chromium from '@sparticuz/chromium-min';
+// import chromium from '@sparticuz/chromium-min';
+
+const chromium = require("@sparticuz/chromium-min");
 chromium.setHeadlessMode = true;
 chromium.setGraphicsMode = false; 
 async function getBrowserInstance() {
 	// const chromium = require('chrome-aws-lambda')
 	// const executablePath = await chromium.executablePath()
-	// console.log(`-----Executable: ${executablePath}`)
-	// if (!executablePath){
-	// 	// run locally
-	// 	console.log('RUNNING LOCALLY !!!')
-	// 	const puppeteer = require('puppeteer')
-	// 	return puppeteer.launch({
-	// 		args: chromium.args,
-	// 		headless: 'new',
-	// 		ignoreHTTPSErrors: true,
-	// 		ignoreDefaultArgs: ['--disable-extensions']
-	// 	})
-	// }
-
+	console.log(`-----Executable: ${chromium.executablePath}`)
+	if (process.env.NODE_ENV === 'development'){
+		// run locally
+		console.log('RUNNING LOCALLY !!!')
+		const puppeteer = require('puppeteer')
+		return puppeteer.launch({
+			args: chromium.args,
+			headless: 'new',
+			ignoreHTTPSErrors: true,
+			ignoreDefaultArgs: ['--disable-extensions']
+		})
+	}
+	
 	// return chromium.puppeteer.launch({
-	// return puppeteer.launch({
-	// 	args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
-	// 	defaultViewport: chromium.defaultViewport,
-	// 	executablePath: await chromium.executablePath(),
-	// 	headless: true,
-	// 	ignoreHTTPSErrors: chromium.headless,
-	// 	ignoreDefaultArgs: ['--disable-extensions']
-	// })
-	// console.log('RUNNING LOCALLY !!!')
-	// const puppeteer = require('puppeteer')
-	// return puppeteer.launch({
-	// 	args: chromium.args,
-	// 	headless: 'new',
-	// 	ignoreHTTPSErrors: true,
-	// 	ignoreDefaultArgs: ['--disable-extensions']
-	// })
-
-
+		// return puppeteer.launch({
+			// 	args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
+			// 	defaultViewport: chromium.defaultViewport,
+			// 	executablePath: await chromium.executablePath(),
+			// 	headless: true,
+			// 	ignoreHTTPSErrors: chromium.headless,
+			// 	ignoreDefaultArgs: ['--disable-extensions']
+			// })
+			
+	const puppeteer = require("puppeteer-core");
 	console.log('RUNNING ON PRODUCTION !!!')
 	return puppeteer.launch({
 		args: chromium.args,
 		defaultViewport: chromium.defaultViewport,
-		executablePath: await chromium.executablePath('/opt/chromium'),
-		headless: chromium.headless,
+		executablePath: await chromium.executablePath(),
+		headless: 'new',
 		ignoreHTTPSErrors: true,
 	});
 }
+
+// const puppeteer = require("puppeteer-core");
+// const chromium = require("@sparticuz/chromium-min");
 
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
@@ -168,21 +165,11 @@ export async function scrapeProducts(searchQuery: string) {
 		
 	// 	await page.close();
 	// 	return searchData;
-	const browser = await puppeteer.launch({
-	  args: chromium.args,
-	  defaultViewport: chromium.defaultViewport,
-	  executablePath: await chromium.executablePath(
-		"https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
-	  ),
-	  headless: chromium.headless,
-	  ignoreHTTPSErrors: true,
-	});
+	
+	const browser = await getBrowserInstance()
 	try {
-	
 		const page = await browser.newPage();
-	
 		await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
-	
 		console.log("Chromium:", await browser.version());
 		console.log("Page Title:", await page.title());
 		
@@ -199,8 +186,8 @@ export async function scrapeProducts(searchQuery: string) {
 export async function scrapeAndUpdateOneProduct(product: any) {
 	if (!product) return;
 
-	const browser = await puppeteer.launch({ headless: 'new' });
-	// const browser: Browser = await getBrowserInstance();
+	// const browser = await puppeteer.launch({ headless: 'new' });
+	const browser = await getBrowserInstance();
 	try {
 		const page = await browser.newPage();
 		await page.goto(product.url);
