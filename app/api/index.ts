@@ -75,7 +75,7 @@ async function getBrowserInstance() {
 			
 	const puppeteer = require("puppeteer-core");
 	console.log('RUNNING ON PRODUCTION !!!')
-	return await chromium.puppeteer.launch({
+	return await puppeteer.launch({
 		args: chromium.args,
 		defaultViewport: chromium.defaultViewport,
 		executablePath: await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"),
