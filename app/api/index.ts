@@ -176,7 +176,7 @@ export async function scrapeProducts(searchQuery: string) {
 		console.log("Page Title:", await page.title());
 		
 		await page.close();
-		return [{url: 'www.google1.com', title: 'dog1'}, {url: 'www.google2.com', title: 'dog2'}]
+		return [{url: 'www.google3.com', title: 'dog3'}, {url: 'www.google4.com', title: 'dog4'}]
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
