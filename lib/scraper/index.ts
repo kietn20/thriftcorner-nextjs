@@ -67,16 +67,6 @@ async function getBrowserInstance() {
 	})
 }
 
-// let chrome = {}
-// let puppeteer: any;
-
-// if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-// 	chrome = require('chrome-aws-lambda')
-// 	puppeteer = require('puppeteer-core')
-// } else {
-// 	puppeteer = require('puppeteer')
-// }
-
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
 
