@@ -43,7 +43,7 @@ import chromium from 'chrome-aws-lambda'
 async function getBrowserInstance() {
 	// const chromium = require('chrome-aws-lambda')
 	const executablePath = await chromium.executablePath
-	console.log(`Executable: ${executablePath}`)
+	console.log(`-----Executable: ${executablePath}`)
 	if (!executablePath){
 		// run locally
 		const puppeteer = require('puppeteer')
@@ -58,7 +58,8 @@ async function getBrowserInstance() {
 	return chromium.puppeteer.launch({
 		args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
 		defaultViewport: chromium.defaultViewport,
-		executablePath: await chromium.executablePath,
+		// executablePath: await chromium.executablePath,
+		executablePath: executablePath,
 		headless: true,
 		ignoreHTTPSErrors: true,
 		ignoreDefaultArgs: ['--disable-extensions']
@@ -164,7 +165,7 @@ export async function scrapeProducts(searchQuery: string) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
 		console.log("done");
-		browser.close();
+		await browser.close();
 	}
 }
 
@@ -216,6 +217,6 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 		console.log(`Failed to scrape product: ${error.message} dogggy`);
 	} finally {
 		console.log("done updating product");
-		browser.close();
+		await browser.close();
 	}
 }
