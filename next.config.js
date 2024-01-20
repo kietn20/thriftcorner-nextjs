@@ -6,7 +6,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ['mongoose', 'puppeteer-core', '@sparticuz/chromium-min']
+    serverComponentsExternalPackages: ['mongoose', 'puppeteer-core']
   },
   images: {
     domains: ['i.ebayimg.com']
