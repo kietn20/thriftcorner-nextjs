@@ -43,7 +43,7 @@ import chromium from 'chrome-aws-lambda'
 async function getBrowserInstance() {
 	// const chromium = require('chrome-aws-lambda')
 	const executablePath = await chromium.executablePath
-
+	console.log(`Executable: ${executablePath}`)
 	if (!executablePath){
 		// run locally
 		const puppeteer = require('puppeteer')
