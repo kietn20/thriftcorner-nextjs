@@ -8,6 +8,9 @@
 		"start": "next start",
 		"lint": "next lint"
 	},
+	"engines": {
+		"node": "^14"
+	},
 	"dependencies": {
 		"@emailjs/browser": "^3.12.1",
 		"@radix-ui/react-dialog": "^1.0.5",
