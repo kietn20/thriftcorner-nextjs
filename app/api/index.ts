@@ -82,7 +82,7 @@ async function getBrowserInstance() {
 
 	console.log('RUNNING ON PRODUCTION !!!')
 	return puppeteer.launch({
-		args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+		args: chromium.args,
 		defaultViewport: chromium.defaultViewport,
 		executablePath: await chromium.executablePath(),
 		headless: chromium.headless,
@@ -101,13 +101,6 @@ export async function scrapeProducts(searchQuery: string) {
 	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
 	try {
 		const page = await browser.newPage();
-
-		// TEST
-		// await page.goto('https://www.google.com')	
-		// console.log(await page.title())	
-		// return [{url: 'https://www.google.com', title: 'dog1'}, {url: 'https://www.google2.com', title: 'dog2'}]
-		// TEST
-
 		await page.goto("https://www.ebay.com/");
 		await page.waitForSelector("#gh-ac");
 		await page.type("#gh-ac", searchQuery);
@@ -170,16 +163,16 @@ export async function scrapeProducts(searchQuery: string) {
 
 			return listOfProducts;
 		});
-
 		// // const data = JSON.stringify(searchData, null, 2);
 		// // fs.writeFileSync("originalProduct.json", data);
-
+		
+		await page.close();
 		return searchData;
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
 		console.log("done");
-		browser.close();
+		await browser.close();
 	}
 }
 
