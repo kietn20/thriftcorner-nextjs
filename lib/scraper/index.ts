@@ -1,7 +1,7 @@
 "use server";
 
 const fs = require("fs");
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 import { Browser } from "puppeteer";
 
 // interface Chrome {
@@ -39,10 +39,11 @@ const session_id = (1000000 * Math.random()) | 0;
 // 	}
 // })
 
-import chromium from 'chrome-aws-lambda'
+// import chromium from 'chrome-aws-lambda'
+import chromium from '@sparticuz/chromium-min';
 async function getBrowserInstance() {
 	// const chromium = require('chrome-aws-lambda')
-	const executablePath = await chromium.executablePath
+	const executablePath = await chromium.executablePath()
 	console.log(`-----Executable: ${executablePath}`)
 	if (!executablePath){
 		// run locally
@@ -55,11 +56,11 @@ async function getBrowserInstance() {
 		})
 	}
 
-	return chromium.puppeteer.launch({
+	// return chromium.puppeteer.launch({
+	return puppeteer.launch({
 		args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
 		defaultViewport: chromium.defaultViewport,
-		// executablePath: await chromium.executablePath,
-		executablePath: executablePath,
+		executablePath: await chromium.executablePath(),
 		headless: true,
 		ignoreHTTPSErrors: true,
 		ignoreDefaultArgs: ['--disable-extensions']
