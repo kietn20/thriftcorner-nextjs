@@ -83,7 +83,7 @@ export async function scrapeProducts(searchQuery: string) {
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
 	// })
 
-	const browser: Browser = await getBrowserInstance()
+	const browser = await getBrowserInstance()
 	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
 	try {
 		const page = await browser.newPage();
@@ -172,7 +172,7 @@ export async function scrapeProducts(searchQuery: string) {
 export async function scrapeAndUpdateOneProduct(product: any) {
 	if (!product) return;
 
-	const browser: Browser = await puppeteer.launch({ headless: 'new' });
+	const browser = await puppeteer.launch({ headless: 'new' });
 	// const browser: Browser = await getBrowserInstance();
 	try {
 		const page = await browser.newPage();
