@@ -73,7 +73,7 @@ async function getBrowserInstance() {
 			// 	ignoreHTTPSErrors: chromium.headless,
 			// 	ignoreDefaultArgs: ['--disable-extensions']
 			// })
-	await chromium.font( "https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf" );
+	await chromium.font("https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf");
 	const puppeteer = require("puppeteer-core");
 	console.log('RUNNING ON PRODUCTION !!!')
 	return await puppeteer.launch({
@@ -82,6 +82,7 @@ async function getBrowserInstance() {
 		executablePath: await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"),
 		headless: 'new',
 		ignoreHTTPSErrors: true,
+		font: "https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf"
 	});
 }
 
