@@ -56,7 +56,7 @@ async function getBrowserInstance() {
 	}
 
 	return chromium.puppeteer.launch({
-		args: [...chromium.args, '--no-sandbox'],
+		args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
 		defaultViewport: chromium.defaultViewport,
 		executablePath: await chromium.executablePath,
 		headless: true,
