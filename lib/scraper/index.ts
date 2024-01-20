@@ -73,8 +73,8 @@ async function getBrowserInstance() {
 	return puppeteer.launch({
 		args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
 		defaultViewport: chromium.defaultViewport,
-		executablePath: await chromium.executablePath(
-		  `https://github.com/Sparticuz/chromium/releases/download/v119.0.0/chromium-v119.0.0-pack.tar`
+		executablePath: await chromium.executablePath() || await chromium.executablePath(
+		  `https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar`
 		),
 		headless: chromium.headless,
 		ignoreHTTPSErrors: true,
@@ -88,7 +88,7 @@ export async function scrapeProducts(searchQuery: string) {
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
 	// })
 
-	const browser = await getBrowserInstance()
+	const browser: Browser = await getBrowserInstance()
 	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
 	try {
 		const page = await browser.newPage();
@@ -177,7 +177,7 @@ export async function scrapeProducts(searchQuery: string) {
 export async function scrapeAndUpdateOneProduct(product: any) {
 	if (!product) return;
 
-	const browser = await puppeteer.launch({ headless: 'new' });
+	const browser: Browser = await puppeteer.launch({ headless: 'new' });
 	// const browser: Browser = await getBrowserInstance();
 	try {
 		const page = await browser.newPage();
