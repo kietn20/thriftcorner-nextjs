@@ -57,14 +57,23 @@ async function getBrowserInstance() {
 	}
 
 	// return chromium.puppeteer.launch({
+	// return puppeteer.launch({
+	// 	args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
+	// 	defaultViewport: chromium.defaultViewport,
+	// 	executablePath: await chromium.executablePath(),
+	// 	headless: true,
+	// 	ignoreHTTPSErrors: chromium.headless,
+	// 	ignoreDefaultArgs: ['--disable-extensions']
+	// })
 	return puppeteer.launch({
-		args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
+		args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
 		defaultViewport: chromium.defaultViewport,
-		executablePath: await chromium.executablePath(),
-		headless: true,
-		ignoreHTTPSErrors: chromium.headless,
-		ignoreDefaultArgs: ['--disable-extensions']
-	})
+		executablePath: await chromium.executablePath(
+		  `https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar`
+		),
+		headless: chromium.headless,
+		ignoreHTTPSErrors: true,
+	});
 }
 
 export async function scrapeProducts(searchQuery: string) {
