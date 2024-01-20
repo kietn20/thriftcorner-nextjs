@@ -6,7 +6,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ['mongoose']
+    serverComponentsExternalPackages: ['mongoose', 'puppeteer-core', 'chrome-aws-lambda']
   },
   images: {
     domains: ['i.ebayimg.com']

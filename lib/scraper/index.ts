@@ -39,30 +39,31 @@ const session_id = (1000000 * Math.random()) | 0;
 // 	}
 // })
 
-// async function getBrowserInstance() {
-// 	// const chromium = require('chrome-aws-lambda')
-// 	const executablePath = await chromium.executablePath
+import chromium from 'chrome-aws-lambda'
+async function getBrowserInstance() {
+	// const chromium = require('chrome-aws-lambda')
+	const executablePath = await chromium.executablePath
 
-// 	if (!executablePath){
-// 		// run locally
-// 		const puppeteer = require('puppeteer')
-// 		return puppeteer.launch({
-// 			args: chromium.args,
-// 			headless: 'new',
-// 			ignoreHTTPSErrors: true,
-// 			ignoreDefaultArgs: ['--disable-extensions']
-// 		})
-// 	}
+	if (!executablePath){
+		// run locally
+		const puppeteer = require('puppeteer')
+		return puppeteer.launch({
+			args: chromium.args,
+			headless: 'new',
+			ignoreHTTPSErrors: true,
+			ignoreDefaultArgs: ['--disable-extensions']
+		})
+	}
 
-// 	return chromium.puppeteer.launch({
-// 		args: chromium.args,
-// 		defaultViewport: chromium.defaultViewport,
-// 		executablePath: await chromium.executablePath,
-// 		headless: true,
-// 		ignoreHTTPSErrors: true,
-// 		ignoreDefaultArgs: ['--disable-extensions']
-// 	})
-// }
+	return chromium.puppeteer.launch({
+		args: chromium.args,
+		defaultViewport: chromium.defaultViewport,
+		executablePath: await chromium.executablePath,
+		headless: true,
+		ignoreHTTPSErrors: true,
+		ignoreDefaultArgs: ['--disable-extensions']
+	})
+}
 
 // let chrome = {}
 // let puppeteer: any;
@@ -81,37 +82,8 @@ export async function scrapeProducts(searchQuery: string) {
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
 	// })
 
+	const browser: Browser = await getBrowserInstance()
 	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
-
-	// const browser = await getBrowserInstance()
-	// const params = {
-	// 	Bucket: 'aws-s3-puppeteer',
-	// 	Key: 'product/id' + Date.now(),
-	// 	Body: "adasdsadsa"
-	// }
-	// S3.upload(params, (error: any, data: any) => {
-	// 	if (error) {
-	// 		console.log(error)
-	// 	}
-	// })
-
-	
-	// let options: any = {}
-	// if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-	// 	options = {
-	// 		args: (chrome as Chrome).args,
-	// 		defaultViewport: (chrome as Chrome).defaultViewport,
-	// 		executablePath: await (chrome as Chrome).executablePath,
-	// 		headless: true,
-	// 		ignoreHTTPSErrors: true,
-	// 		ignoreDefaultArgs: ['--disable-extensions'],
-	// 	}
-	// } else {
-	// 	options = { headless: 'new' }
-	// }
-
-	// let browser = await getBrowserInstance()
-	const browser: Browser = await puppeteer.launch({ headless: 'new' });
 	try {
 		const page = await browser.newPage();
 
