@@ -76,7 +76,7 @@ export async function scrapeProducts(searchQuery: string) {
 			// }
 
 			let selector = "ul > li.s-item";
-			for (let i = 1; i <= 30; i++) {
+			for (let i = 1; i <= 20; i++) {
 				selector += `:is([data-gr4="${i}"]), `;
 			}
 
