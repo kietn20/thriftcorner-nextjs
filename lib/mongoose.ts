@@ -29,17 +29,17 @@ export const deleteCollection = async () => {
         // }
 
         const collections = await mongoose.connection.db.listCollections().toArray();
-        console.log(collections)
+        // console.log(collections)
         const collectionExists = collections.some((collection) => collection.name === 'products');
 
         if (collectionExists) {
             mongoose.connection.dropCollection('products')
             console.log('Collection dropped!')
-            return true
+            // return true
         } else {
             console.log(`Collection products does not exist.`);
         }
-        return false
+        // return false
         
         // return true
     } catch (error) {
