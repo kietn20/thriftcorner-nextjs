@@ -86,9 +86,9 @@ export async function scrapeProducts(searchQuery: string) {
 							?.textContent?.trim()
 							.replace("$", "") || ""
 					),
-					condition: item
-						.querySelector("span.SECONDARY_INFO")
-						?.textContent?.trim(),
+					// condition: item
+					// 	.querySelector("span.SECONDARY_INFO")
+					// 	?.textContent?.trim(),
 					// freeShipping:
 					// 	item
 					// 		.querySelector("span.s-item__shipping")
@@ -121,7 +121,7 @@ export async function scrapeProducts(searchQuery: string) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
 		console.log("done");
-		browser.close();
+		await browser.close();
 	}
 }
 
