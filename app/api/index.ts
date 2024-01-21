@@ -89,18 +89,20 @@ export async function scrapeProducts(searchQuery: string) {
 					title: element
 						.querySelector(".s-item__title")
 						?.textContent?.trim() + `--> ${index}`,
-					price: parseFloat(
-						element
-							.querySelector("span.s-item__price")
-							?.textContent?.trim()
-							.replace("$", "") || ""
-					),
-					url: element
-						.querySelector("a.s-item__link")
-						?.getAttribute("href"),
-					imageUrl: element
-						.querySelector("div.s-item__image img")
-						?.getAttribute("src"),
+					price: 3.89,
+					url: `https://www.youtube.com/results?search_query=${index}`,
+					// price: parseFloat(
+					// 	element
+					// 		.querySelector("span.s-item__price")
+					// 		?.textContent?.trim()
+					// 		.replace("$", "") || ""
+					// ),
+					// url: element
+					// 	.querySelector("a.s-item__link")
+					// 	?.getAttribute("href"),
+					// imageUrl: element
+					// 	.querySelector("div.s-item__image img")
+					// 	?.getAttribute("src"),
 				});
 			});
 
@@ -164,7 +166,7 @@ export async function scrapeProducts(searchQuery: string) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
 		console.log("done");
-		await browser.close();
+		browser.close();
 	}
 }
 
