@@ -91,7 +91,7 @@ export async function scrapeProducts(searchQuery: string) {
 				});
 			}
 
-			const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
+			const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 30);
 			for (const item of items) {
 				// item.scrollIntoView();
 				await delay(50);
