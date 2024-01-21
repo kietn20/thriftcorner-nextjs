@@ -44,7 +44,7 @@ async function getBrowserInstance() {
 		headless: chromium.headless,
 	});
 }
-
+export const runtime = 'edge';
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
 
@@ -116,7 +116,7 @@ export async function scrapeProducts(searchQuery: string) {
 		// // fs.writeFileSync("originalProduct.json", data);
 		
 		// await page.close();
-		return searchData;
+		return new Response(searchData);
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
