@@ -17,6 +17,7 @@ export async function scrapeAndStoreProduct(searchQuery: string) {
 
 		await Product.deleteMany({})
 		await Product.insertMany(scrapedProducts)
+		await mongoose.connection.close()
 		// scrapedProducts.forEach(async (product: any) => {
 		// 	const newProduct = await Product.findOneAndUpdate(
 		// 		{ url: product.url },
