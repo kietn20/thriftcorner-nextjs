@@ -2,7 +2,7 @@
 import { DM_Serif_Text } from "next/font/google";
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
-import { getAllProducts } from "@/lib/actions";
+import { getAllProducts } from "@/app/api/actions";
 import Image from "next/image";
 import Shop from "@/components/Shop";
 import { Card, CardContent } from "@/components/ui/card";
@@ -54,7 +54,7 @@ export default function Home() {
 		setTimeout(() => {
 			const shopArea = document.getElementById("shopArea");
 			shopArea?.scrollIntoView({ behavior: "smooth", inline: "center" });
-		}, 700);
+		}, 500);
 	};
 
 	return (

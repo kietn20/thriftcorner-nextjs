@@ -1,6 +1,6 @@
 // "use client";
 import CarouselComponent from "@/components/CarouselComponent";
-import { getProductById } from "@/lib/actions";
+import { getProductById } from "@/app/api/actions";
 import { scrapeAndUpdateOneProduct } from "@/app/api";
 import Image from "next/image";
 import { redirect } from "next/navigation";

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { scrapeAndStoreProduct } from "@/lib/actions";
+import { scrapeAndStoreProduct } from "@/app/api/actions";
 import { Loader2 } from "lucide-react";
 
 const SearchBar = ({ updateSearchBar = () => {} }) => {
@@ -57,9 +57,15 @@ const SearchBar = ({ updateSearchBar = () => {} }) => {
 					<SelectGroup>
 						<SelectLabel>Market</SelectLabel>
 						<SelectItem value="Ebay">Ebay</SelectItem>
-						<SelectItem disabled value="Facebook">Facebook</SelectItem>
-						<SelectItem disabled value="OfferUp">OfferUp</SelectItem>
-						<SelectItem disabled value="Poshmark">Poshmark</SelectItem>
+						<SelectItem disabled value="Facebook">
+							Facebook
+						</SelectItem>
+						<SelectItem disabled value="OfferUp">
+							OfferUp
+						</SelectItem>
+						<SelectItem disabled value="Poshmark">
+							Poshmark
+						</SelectItem>
 					</SelectGroup>
 				</SelectContent>
 			</Select>
