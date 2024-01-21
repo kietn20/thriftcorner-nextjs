@@ -1,15 +1,10 @@
 "use server";
-
-const fs = require("fs");
-// const puppeteer = require("puppeteer-core");
-// import { Browser } from "puppeteer";
-
 // BrightData proxy configuration
-const username = String(process.env.BRIGHT_DATA_USERNAME);
-const password = String(process.env.BRIGHT_DATA_PASSWORD);
-const auth = `${username}:${password}`;
-const port = 22225;
-const session_id = (1000000 * Math.random()) | 0;
+// const username = String(process.env.BRIGHT_DATA_USERNAME);
+// const password = String(process.env.BRIGHT_DATA_PASSWORD);
+// const auth = `${username}:${password}`;
+// const port = 22225;
+// const session_id = (1000000 * Math.random()) | 0;
 // const options = {
 // 	auth: {
 // 		username: `${username}-session-${session_id}`,
@@ -20,8 +15,6 @@ const session_id = (1000000 * Math.random()) | 0;
 // 	rejectUnauthorized: false,
 // };
 
-// import chromium from 'chrome-aws-lambda'
-// import puppeteer from "puppeteer-core";
 // const puppeteer = require("puppeteer-core");
 // import chromium from '@sparticuz/chromium-min';
 
@@ -30,9 +23,6 @@ chromium.setHeadlessMode = true;
 chromium.setGraphicsMode = false; 
 
 async function getBrowserInstance() {
-	// const chromium = require('chrome-aws-lambda')
-	// const executablePath = await chromium.executablePath()
-	// console.log(`-----Executable: ${chromium.executablePath}`)
 	if (process.env.NODE_ENV === 'development'){
 		// run locally
 		console.log('RUNNING LOCALLY !!!')
@@ -44,26 +34,17 @@ async function getBrowserInstance() {
 			ignoreDefaultArgs: ['--disable-extensions']
 		})
 	}
-	
-	// return chromium.puppeteer.launch({
-		// return puppeteer.launch({
-			// 	args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
-			// 	defaultViewport: chromium.defaultViewport,
-			// 	executablePath: await chromium.executablePath(),
-			// 	headless: true,
-			// 	ignoreHTTPSErrors: chromium.headless,
-			// 	ignoreDefaultArgs: ['--disable-extensions']
-			// })
 	// process.env.HOME = '/tmp';
 	// await chromium.font("https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf");
 	const puppeteer = require("puppeteer-core");
 	console.log('RUNNING ON PRODUCTION !!!')
 	return await puppeteer.launch({
-		args: chromium.args,
+		args: [...chromium.args, '--hide-scrollbars', '--disable-web-security', '--disable-setuid-sandbox'],
 		defaultViewport: chromium.defaultViewport,
 		executablePath: await chromium.executablePath(),
-		headless: chromium.headless,
+		headless: 'new',
 		ignoreHTTPSErrors: true,
+		ignoreDefaultArgs: ['--disable-extensions']
 	});
 }
 
@@ -144,16 +125,6 @@ export async function scrapeProducts(searchQuery: string) {
 		
 		// await page.close();
 		return searchData;
-	
-	// const browser = await getBrowserInstance()
-	// try {
-	// 	const page = await browser.newPage();
-	// 	await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
-	// 	console.log("Chromium:", await browser.version());
-	// 	console.log("Page Title:", await page.title());
-		
-	// 	await page.close();
-	// 	return [{url: 'www.google3.com', title: 'dog3'}, {url: 'www.google4.com', title: 'dog4'}]
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
