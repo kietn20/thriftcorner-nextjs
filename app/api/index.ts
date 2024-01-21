@@ -1,4 +1,4 @@
-"use server";
+// "use server";
 // BrightData proxy configuration
 // const username = String(process.env.BRIGHT_DATA_USERNAME);
 // const password = String(process.env.BRIGHT_DATA_PASSWORD);
@@ -44,7 +44,6 @@ async function getBrowserInstance() {
 		headless: chromium.headless,
 	});
 }
-export const runtime = 'edge';
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
 
@@ -116,7 +115,7 @@ export async function scrapeProducts(searchQuery: string) {
 		// // fs.writeFileSync("originalProduct.json", data);
 		
 		// await page.close();
-		return new Response(searchData);
+		return searchData;
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
