@@ -177,6 +177,6 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 	}
 }
 
-export const config = {
-	runtime: 'experimental-edge',
-}
+// export const config = {
+// 	runtime: 'edge',
+// }
