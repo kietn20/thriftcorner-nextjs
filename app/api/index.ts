@@ -89,18 +89,18 @@ export async function scrapeProducts(searchQuery: string) {
 					condition: item
 						.querySelector("span.SECONDARY_INFO")
 						?.textContent?.trim(),
-					freeShipping:
-						item
-							.querySelector("span.s-item__shipping")
-							?.textContent?.trim() === "Free shipping",
-					freeReturns:
-						item
-							.querySelector("span.s-item__free-returns")
-							?.textContent?.trim() === "Free returns",
-					discount:
-						item
-							.querySelector("span.NEGATIVE")
-							?.textContent?.trim() || false,
+					// freeShipping:
+					// 	item
+					// 		.querySelector("span.s-item__shipping")
+					// 		?.textContent?.trim() === "Free shipping",
+					// freeReturns:
+					// 	item
+					// 		.querySelector("span.s-item__free-returns")
+					// 		?.textContent?.trim() === "Free returns",
+					// discount:
+					// 	item
+					// 		.querySelector("span.NEGATIVE")
+					// 		?.textContent?.trim() || false,
 					url: item
 						.querySelector("a.s-item__link")
 						?.getAttribute("href"),
