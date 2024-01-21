@@ -51,70 +51,78 @@ export async function scrapeProducts(searchQuery: string) {
 	// })
 
 	const browser = await getBrowserInstance()
+	// try {
+	// 	const page = await browser.newPage();
+	// 	await page.goto("https://www.ebay.com/");
+	// 	await page.waitForSelector("#gh-ac");
+	// 	await page.type("#gh-ac", searchQuery);
+	// 	await page.click('input[value="Search"]');
+	// 	await page.waitForNavigation();
+
+	// 	var searchData = await page.evaluate(async () => {
+	// 		var listOfProducts: any[] = [];
+	// 		function delay(ms: number) {
+	// 			return new Promise((resolve) => {
+	// 				setTimeout(resolve, ms);
+	// 			});
+	// 		}
+
+	// 		const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 20);
+	// 		// for (const item of items) {
+	// 		// 	// item.scrollIntoView();
+	// 		// 	await delay(50);
+	// 		// }
+
+	// 		items.map(async (item) => {
+	// 			listOfProducts.push({
+	// 				title: item
+	// 					.querySelector(".s-item__title")
+	// 					?.textContent?.trim(),
+	// 				price: parseFloat(
+	// 					item
+	// 						.querySelector("span.s-item__price")
+	// 						?.textContent?.trim()
+	// 						.replace("$", "") || ""
+	// 				),
+	// 				// condition: item
+	// 				// 	.querySelector("span.SECONDARY_INFO")
+	// 				// 	?.textContent?.trim(),
+	// 				// freeShipping:
+	// 				// 	item
+	// 				// 		.querySelector("span.s-item__shipping")
+	// 				// 		?.textContent?.trim() === "Free shipping",
+	// 				// freeReturns:
+	// 				// 	item
+	// 				// 		.querySelector("span.s-item__free-returns")
+	// 				// 		?.textContent?.trim() === "Free returns",
+	// 				// discount:
+	// 				// 	item
+	// 				// 		.querySelector("span.NEGATIVE")
+	// 				// 		?.textContent?.trim() || false,
+	// 				url: item
+	// 					.querySelector("a.s-item__link")
+	// 					?.getAttribute("href"),
+	// 				imageUrl: item
+	// 					.querySelector("div.s-item__image img")
+	// 					?.getAttribute("src"),
+	// 			});
+	// 		});
+
+	// 		return listOfProducts;
+	// 	});
+	// 	// // const data = JSON.stringify(searchData, null, 2);
+	// 	// // fs.writeFileSync("originalProduct.json", data);
+		
+	// 	// await page.close();
+	// 	return searchData;
 	try {
 		const page = await browser.newPage();
-		await page.goto("https://www.ebay.com/");
-		await page.waitForSelector("#gh-ac");
-		await page.type("#gh-ac", searchQuery);
-		await page.click('input[value="Search"]');
-		await page.waitForNavigation();
-
-		var searchData = await page.evaluate(async () => {
-			var listOfProducts: any[] = [];
-			function delay(ms: number) {
-				return new Promise((resolve) => {
-					setTimeout(resolve, ms);
-				});
-			}
-
-			const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 20);
-			// for (const item of items) {
-			// 	// item.scrollIntoView();
-			// 	await delay(50);
-			// }
-
-			items.map(async (item) => {
-				listOfProducts.push({
-					title: item
-						.querySelector(".s-item__title")
-						?.textContent?.trim(),
-					price: parseFloat(
-						item
-							.querySelector("span.s-item__price")
-							?.textContent?.trim()
-							.replace("$", "") || ""
-					),
-					// condition: item
-					// 	.querySelector("span.SECONDARY_INFO")
-					// 	?.textContent?.trim(),
-					// freeShipping:
-					// 	item
-					// 		.querySelector("span.s-item__shipping")
-					// 		?.textContent?.trim() === "Free shipping",
-					// freeReturns:
-					// 	item
-					// 		.querySelector("span.s-item__free-returns")
-					// 		?.textContent?.trim() === "Free returns",
-					// discount:
-					// 	item
-					// 		.querySelector("span.NEGATIVE")
-					// 		?.textContent?.trim() || false,
-					url: item
-						.querySelector("a.s-item__link")
-						?.getAttribute("href"),
-					imageUrl: item
-						.querySelector("div.s-item__image img")
-						?.getAttribute("src"),
-				});
-			});
-
-			return listOfProducts;
-		});
-		// // const data = JSON.stringify(searchData, null, 2);
-		// // fs.writeFileSync("originalProduct.json", data);
+		await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
+		console.log("Chromium:", await browser.version());
+		console.log("Page Title:", await page.title());
 		
-		// await page.close();
-		return searchData;
+		await page.close();
+		return [{url: 'www.google1.com', title: 'dog1'}, {url: 'www.google2.com', title: 'dog2'}]
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
