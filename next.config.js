@@ -9,7 +9,10 @@ const nextConfig = {
     serverComponentsExternalPackages: ['mongoose', 'puppeteer-core', '@sparticuz/chromium']
   },
   images: {
-    remotePatterns: ['i.ebayimg.com']
+    remotePatterns: [{
+      protocol: 'https',
+      hostname: 'i.ebayimg.com',
+    }]
   },
 }
 
