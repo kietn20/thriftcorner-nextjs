@@ -4,12 +4,6 @@ const fs = require("fs");
 // const puppeteer = require("puppeteer-core");
 // import { Browser } from "puppeteer";
 
-// interface Chrome {
-// 	args: any[]; // Change 'any' to the actual type of 'args' if possible,
-// 	defaultViewport: any,
-// 	executablePath: any,
-// }
-
 // BrightData proxy configuration
 const username = String(process.env.BRIGHT_DATA_USERNAME);
 const password = String(process.env.BRIGHT_DATA_PASSWORD);
@@ -25,19 +19,6 @@ const session_id = (1000000 * Math.random()) | 0;
 // 	port,
 // 	rejectUnauthorized: false,
 // };
-
-// let chrome = {}
-// let puppeteer: any;
-
-// import chromium from 'chrome-aws-lambda'
-// import AWS from 'aws-sdk'
-
-// const S3 = new AWS.S3({
-// 	credentials: {
-// 		accessKeyId: process.env.S3ACCESS_KEY || '',
-// 		secretAccessKey: process.env.S3SECRET_KEY || ''
-// 	}
-// })
 
 // import chromium from 'chrome-aws-lambda'
 // import puppeteer from "puppeteer-core";
@@ -86,9 +67,6 @@ async function getBrowserInstance() {
 	});
 }
 
-// const puppeteer = require("puppeteer-core");
-// const chromium = require("@sparticuz/chromium-min");
-
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
 
@@ -96,87 +74,86 @@ export async function scrapeProducts(searchQuery: string) {
 	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
 	// })
 
-	// const browser = await getBrowserInstance()
-	// const browser: Browser = await puppeteer.launch({ headless: 'new' });
-	// try {
-	// 	const page = await browser.newPage();
-	// 	await page.goto("https://www.ebay.com/");
-	// 	await page.waitForSelector("#gh-ac");
-	// 	await page.type("#gh-ac", searchQuery);
-	// 	await page.click('input[value="Search"]');
-	// 	await page.waitForNavigation();
-
-	// 	var searchData = await page.evaluate(async () => {
-	// 		var listOfProducts: any[] = [];
-	// 		function delay(ms: number) {
-	// 			return new Promise((resolve) => {
-	// 				setTimeout(resolve, ms);
-	// 			});
-	// 		}
-
-	// 		const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
-	// 		for (const item of items) {
-	// 			item.scrollIntoView();
-	// 			await delay(50);
-	// 		}
-
-	// 		items.map(async (item) => {
-	// 			listOfProducts.push({
-	// 				title: item
-	// 					.querySelector(".s-item__title")
-	// 					?.textContent?.trim(),
-	// 				price: parseFloat(
-	// 					item
-	// 						.querySelector("span.s-item__price")
-	// 						?.textContent?.trim()
-	// 						.replace("$", "") || ""
-	// 				),
-	// 				seller: "",
-	// 				sellerPfp: "",
-	// 				sold: 0,
-	// 				rating: "",
-	// 				condition: item
-	// 					.querySelector("span.SECONDARY_INFO")
-	// 					?.textContent?.trim(),
-	// 				freeShipping:
-	// 					item
-	// 						.querySelector("span.s-item__shipping")
-	// 						?.textContent?.trim() === "Free shipping",
-	// 				freeReturns:
-	// 					item
-	// 						.querySelector("span.s-item__free-returns")
-	// 						?.textContent?.trim() === "Free returns",
-	// 				discount:
-	// 					item
-	// 						.querySelector("span.NEGATIVE")
-	// 						?.textContent?.trim() || false,
-	// 				url: item
-	// 					.querySelector("a.s-item__link")
-	// 					?.getAttribute("href"),
-	// 				imageUrl: item
-	// 					.querySelector("div.s-item__image img")
-	// 					?.getAttribute("src"),
-	// 				imageUrls: [],
-	// 			});
-	// 		});
-
-	// 		return listOfProducts;
-	// 	});
-	// 	// // const data = JSON.stringify(searchData, null, 2);
-	// 	// // fs.writeFileSync("originalProduct.json", data);
-		
-	// 	await page.close();
-	// 	return searchData;
-	
 	const browser = await getBrowserInstance()
 	try {
 		const page = await browser.newPage();
-		await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
-		console.log("Chromium:", await browser.version());
-		console.log("Page Title:", await page.title());
+		await page.goto("https://www.ebay.com/");
+		await page.waitForSelector("#gh-ac");
+		await page.type("#gh-ac", searchQuery);
+		await page.click('input[value="Search"]');
+		await page.waitForNavigation();
+
+		var searchData = await page.evaluate(async () => {
+			var listOfProducts: any[] = [];
+			function delay(ms: number) {
+				return new Promise((resolve) => {
+					setTimeout(resolve, ms);
+				});
+			}
+
+			const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
+			for (const item of items) {
+				item.scrollIntoView();
+				await delay(50);
+			}
+
+			items.map(async (item) => {
+				listOfProducts.push({
+					title: item
+						.querySelector(".s-item__title")
+						?.textContent?.trim(),
+					price: parseFloat(
+						item
+							.querySelector("span.s-item__price")
+							?.textContent?.trim()
+							.replace("$", "") || ""
+					),
+					seller: "",
+					sellerPfp: "",
+					sold: 0,
+					rating: "",
+					condition: item
+						.querySelector("span.SECONDARY_INFO")
+						?.textContent?.trim(),
+					freeShipping:
+						item
+							.querySelector("span.s-item__shipping")
+							?.textContent?.trim() === "Free shipping",
+					freeReturns:
+						item
+							.querySelector("span.s-item__free-returns")
+							?.textContent?.trim() === "Free returns",
+					discount:
+						item
+							.querySelector("span.NEGATIVE")
+							?.textContent?.trim() || false,
+					url: item
+						.querySelector("a.s-item__link")
+						?.getAttribute("href"),
+					imageUrl: item
+						.querySelector("div.s-item__image img")
+						?.getAttribute("src"),
+					imageUrls: [],
+				});
+			});
+
+			return listOfProducts;
+		});
+		// // const data = JSON.stringify(searchData, null, 2);
+		// // fs.writeFileSync("originalProduct.json", data);
 		
 		await page.close();
-		return [{url: 'www.google3.com', title: 'dog3'}, {url: 'www.google4.com', title: 'dog4'}]
+		return searchData;
+	
+	// const browser = await getBrowserInstance()
+	// try {
+	// 	const page = await browser.newPage();
+	// 	await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
+	// 	console.log("Chromium:", await browser.version());
+	// 	console.log("Page Title:", await page.title());
+		
+	// 	await page.close();
+	// 	return [{url: 'www.google3.com', title: 'dog3'}, {url: 'www.google4.com', title: 'dog4'}]
 	} catch (error: any) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
