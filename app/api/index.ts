@@ -93,7 +93,7 @@ export async function scrapeProducts(searchQuery: string) {
 
 			const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 59);
 			for (const item of items) {
-				item.scrollIntoView();
+				// item.scrollIntoView();
 				await delay(50);
 			}
 
@@ -189,10 +189,10 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 					".ux-image-grid-container.masonry-211.x-photos-max-view--show > div.ux-image-grid > button"
 				),
 			];
-			for (const image of images) {
-				image.scrollIntoView();
-				await delay(50);
-			}
+			// for (const image of images) {
+			// 	// image.scrollIntoView();
+			// 	await delay(50);
+			// }
 
 			let scrapedImageUrls: any[] = [];
 			images.map((image) => {
