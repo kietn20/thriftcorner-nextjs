@@ -8,7 +8,7 @@ export async function scrapeAndStoreProduct(searchQuery: string) {
 	if (!searchQuery) return;
 
 	try {
-		// deleteCollection();
+		deleteCollection();
 		connectToDB();
 
 		var scrapedProducts = await scrapeProducts(searchQuery);
@@ -20,7 +20,7 @@ export async function scrapeAndStoreProduct(searchQuery: string) {
 				product,
 				{ upsert: true, new: true }
 			);
-			// revalidatePath(`/products/${newProduct._id}`)
+			revalidatePath(`/products/${newProduct._id}`)
 		});
 	} catch (error: any) {
 		throw new Error(`Failed to create/update product: ${error.message}`);
