@@ -3,17 +3,19 @@ import { revalidatePath } from "next/cache";
 import Product from "../models/product.model";
 import { connectToDB, deleteCollection } from "../mongoose";
 import { scrapeProducts } from "../../app/api";
+import mongoose from "mongoose";
 
 export async function scrapeAndStoreProduct(searchQuery: string) {
 	if (!searchQuery) return;
 
 	try {
-		deleteCollection();
+		// deleteCollection();
 		connectToDB();
 
 		var scrapedProducts = await scrapeProducts(searchQuery);
 		if (!scrapedProducts) return;
 
+		await Product.deleteMany({})
 		scrapedProducts.forEach(async (product: any) => {
 			const newProduct = await Product.findOneAndUpdate(
 				{ url: product.url },
@@ -24,7 +26,7 @@ export async function scrapeAndStoreProduct(searchQuery: string) {
 		});
 	} catch (error: any) {
 		throw new Error(`Failed to create/update product: ${error.message}`);
-	}
+	} 
 }
 
 export async function getProductById(productId: string) {
