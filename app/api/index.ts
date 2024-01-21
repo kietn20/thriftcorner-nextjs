@@ -19,8 +19,8 @@
 // import chromium from '@sparticuz/chromium-min';
 
 const chromium = require("@sparticuz/chromium");
-chromium.setHeadlessMode = true;
-chromium.setGraphicsMode = false; 
+// chromium.setHeadlessMode = true;
+// chromium.setGraphicsMode = false; 
 
 async function getBrowserInstance() {
 	if (process.env.NODE_ENV === 'development'){
@@ -86,10 +86,6 @@ export async function scrapeProducts(searchQuery: string) {
 							?.textContent?.trim()
 							.replace("$", "") || ""
 					),
-					seller: "",
-					sellerPfp: "",
-					sold: 0,
-					rating: "",
 					condition: item
 						.querySelector("span.SECONDARY_INFO")
 						?.textContent?.trim(),
@@ -111,7 +107,6 @@ export async function scrapeProducts(searchQuery: string) {
 					imageUrl: item
 						.querySelector("div.s-item__image img")
 						?.getAttribute("src"),
-					imageUrls: [],
 				});
 			});
 
@@ -180,4 +175,8 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 		console.log("done updating product");
 		await browser.close();
 	}
+}
+
+export const config = {
+	runtime: 'experimental-edge',
 }
