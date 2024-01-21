@@ -34,7 +34,6 @@ async function getBrowserInstance() {
 			ignoreDefaultArgs: ['--disable-extensions']
 		})
 	}
-	// process.env.HOME = '/tmp';
 	// await chromium.font("https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf");
 	const puppeteer = require("puppeteer-core");
 	console.log('RUNNING ON PRODUCTION !!!')
