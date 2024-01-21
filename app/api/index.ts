@@ -142,7 +142,7 @@ export async function scrapeProducts(searchQuery: string) {
 		// // const data = JSON.stringify(searchData, null, 2);
 		// // fs.writeFileSync("originalProduct.json", data);
 		
-		await page.close();
+		// await page.close();
 		return searchData;
 	
 	// const browser = await getBrowserInstance()
@@ -158,7 +158,7 @@ export async function scrapeProducts(searchQuery: string) {
 		throw new Error(`Failed to scrape product: ${error.message}`);
 	} finally {
 		console.log("done");
-		await browser.close();
+		browser.close();
 	}
 }
 
