@@ -6,37 +6,39 @@ import { scrapeProducts } from "..";
 import mongoose from "mongoose";
 
 export async function scrapeAndStoreProduct(searchQuery: string) {
-	if (!searchQuery) return;
+	return
+	// if (!searchQuery) return;
 
-	try {
-		// deleteCollection();
-		connectToDB();
+	// try {
+	// 	// deleteCollection();
+	// 	connectToDB();
 
-		var scrapedProducts = await scrapeProducts(searchQuery);
-		if (!scrapedProducts) return;
+	// 	var scrapedProducts = await scrapeProducts(searchQuery);
+	// 	if (!scrapedProducts) return;
 
-		await Product.deleteMany({})
-		await Product.insertMany(scrapedProducts)
-		await mongoose.connection.close()
-		// scrapedProducts.forEach(async (product: any) => {
-		// 	const newProduct = await Product.findOneAndUpdate(
-		// 		{ url: product.url },
-		// 		product,
-		// 		{ upsert: true }
-		// 	);
-		// 	revalidatePath(`/products/${newProduct._id}`)
-		// });
-	} catch (error: any) {
-		throw new Error(`Failed to create/update product: ${error.message}`);
-	} 
+	// 	await Product.deleteMany({})
+	// 	await Product.insertMany(scrapedProducts)
+	// 	await mongoose.connection.close()
+	// 	// scrapedProducts.forEach(async (product: any) => {
+	// 	// 	const newProduct = await Product.findOneAndUpdate(
+	// 	// 		{ url: product.url },
+	// 	// 		product,
+	// 	// 		{ upsert: true }
+	// 	// 	);
+	// 	// 	revalidatePath(`/products/${newProduct._id}`)
+	// 	// });
+	// } catch (error: any) {
+	// 	throw new Error(`Failed to create/update product: ${error.message}`);
+	// } 
 }
 
 export async function getProductById(productId: string) {
 	try {
-		connectToDB()
+		// connectToDB()
 
 		const product = await Product.findOne({ _id: productId});
 		if (!product) return null;
+		await mongoose.connection.close()
 
 		return product
 	} catch (error) {
@@ -46,7 +48,7 @@ export async function getProductById(productId: string) {
 
 export async function getAllProducts() {
 	try {
-		connectToDB();
+		// connectToDB();
 
 		const products = await Product.find()
 		return JSON.parse(JSON.stringify(products))

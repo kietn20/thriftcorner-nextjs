@@ -101,7 +101,7 @@ export default function Home() {
 					</Carousel>
 				</div>
 				<div className="mt-28 text-center">
-					{allProducts.length > 0 ? (
+					{allProducts?.length > 0 ? (
 						<div>
 							<Shop id="shopArea" allProducts={allProducts} />
 							<Contact />

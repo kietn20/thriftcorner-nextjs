@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { scrapeAndStoreProduct } from "@/app/api/actions";
+// import { scrapeAndStoreProduct } from "@/app/api/actions";
 import { Loader2 } from "lucide-react";
+import { scrapeProducts } from "@/app/api";
 
 const SearchBar = ({ updateSearchBar = () => {} }) => {
 	const [searchPrompt, setSearchPrompt] = useState("");
@@ -38,7 +39,8 @@ const SearchBar = ({ updateSearchBar = () => {} }) => {
 
 		try {
 			setIsLoading(true);
-			await scrapeAndStoreProduct(searchPrompt);
+			// await scrapeAndStoreProduct(searchPrompt);
+			await scrapeProducts(searchPrompt)
 		} catch (error) {
 			console.log(error);
 		} finally {

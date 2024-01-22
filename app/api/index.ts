@@ -1,26 +1,9 @@
-// "use server";
-// BrightData proxy configuration
-// const username = String(process.env.BRIGHT_DATA_USERNAME);
-// const password = String(process.env.BRIGHT_DATA_PASSWORD);
-// const auth = `${username}:${password}`;
-// const port = 22225;
-// const session_id = (1000000 * Math.random()) | 0;
-// const options = {
-// 	auth: {
-// 		username: `${username}-session-${session_id}`,
-// 		password,
-// 	},
-// 	host: "brd.superproxy.io:22225",
-// 	port,
-// 	rejectUnauthorized: false,
-// };
-
-// const puppeteer = require("puppeteer-core");
-// import chromium from '@sparticuz/chromium-min';
+"use server";
+import Product from "@/lib/models/product.model";
+import { connectToDB } from "@/lib/mongoose";
+import mongoose, { mongo } from "mongoose";
 
 const chromium = require("@sparticuz/chromium");
-// chromium.setHeadlessMode = true;
-// chromium.setGraphicsMode = false;
 
 async function getBrowserInstance() {
 	if (process.env.NODE_ENV === "development") {
@@ -34,7 +17,6 @@ async function getBrowserInstance() {
 			ignoreDefaultArgs: ["--disable-extensions"],
 		});
 	}
-	// await chromium.font("https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf");
 	const puppeteer = require("puppeteer-core");
 	console.log("RUNNING ON PRODUCTION !!!");
 	return await puppeteer.launch({
@@ -46,9 +28,8 @@ async function getBrowserInstance() {
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
 
-	// const browser: Browser = await puppeteer.connect({
-	//     browserWSEndpoint: `wss://${auth}@brd.superproxy.io:9222`
-	// })
+	if (!process.env.MONGODB_URI) return 'Missing MONGODB_URI'
+	await mongoose.connect(process.env.MONGODB_URI)
 
 	const browser = await getBrowserInstance();
 	try {
@@ -61,19 +42,6 @@ export async function scrapeProducts(searchQuery: string) {
 
 		var searchData = await page.evaluate(async () => {
 			var listOfProducts: any[] = [];
-			function delay(ms: number) {
-				return new Promise((resolve) => {
-					setTimeout(resolve, ms);
-				});
-			}
-			// for (let i = 1; i < 31; i++) {
-			// 	let item = document.querySelector("ul > li.s-item")
-			// 	listOfProducts.push({
-			// 		title: `northface hat ${i}`,
-			// 		price: 2.89,
-			// 		url: `https://www.youtube.com/results?search_query=${i}`,
-			// 	})
-			// }
 
 			let selector = "ul > li.s-item";
 			for (let i = 1; i <= 20; i++) {
@@ -105,7 +73,7 @@ export async function scrapeProducts(searchQuery: string) {
 					// 	?.getAttribute("src"),
 				});
 			});
-
+			
 			// const items = [...document.querySelectorAll("ul > li.s-item")].slice(0, 20);
 			// for (const item of items) {
 			// 	// item.scrollIntoView();
@@ -149,24 +117,26 @@ export async function scrapeProducts(searchQuery: string) {
 
 			return listOfProducts;
 		});
+		await Product.deleteMany({})
+        await Product.insertMany(searchData)
+		
 		// // const data = JSON.stringify(searchData, null, 2);
 		// // fs.writeFileSync("originalProduct.json", data);
-
+		
 		// await page.close();
-		return searchData;
-
+		// return searchData;
+		
 		// try {
-		// 	const page = await browser.newPage();
-		// 	await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
-		// 	console.log("Chromium:", await browser.version());
-		// 	console.log("Page Title:", await page.title());
-
-		// 	return [{url: 'www.google1.com', title: 'dog1', price: 1.89}, {url: 'www.google2.com', title: 'dog2', price: 1.89}, {url: 'www.google3.com', title: 'dog3', price: 1.89}, {url: 'www.google4.com', title: 'dog4', price: 1.89}, {url: 'www.google5.com', title: 'dog5', price: 1.89}, {url: 'www.google6.com', title: 'dog6', price: 1.89}, {url: 'www.google7.com', title: 'dog7', price: 1.89}, {url: 'www.google8.com', title: 'dog8', price: 1.89}, {url: 'www.google9.com', title: 'dog9', price: 1.89}, {url: 'www.google10.com', title: 'dog10', price: 1.89}, {url: 'www.google11.com', title: 'dog11', price: 1.89}, {url: 'www.google12.com', title: 'dog12', price: 1.89}]
-	} catch (error: any) {
-		throw new Error(`Failed to scrape product: ${error.message}`);
-	} finally {
-		console.log("done");
-		browser.close();
+			// 	const page = await browser.newPage();
+			// 	await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
+			// 	console.log("Chromium:", await browser.version());
+			// 	console.log("Page Title:", await page.title());
+			
+			// 	return [{url: 'www.google1.com', title: 'dog1', price: 1.89}, {url: 'www.google2.com', title: 'dog2', price: 1.89}, {url: 'www.google3.com', title: 'dog3', price: 1.89}, {url: 'www.google4.com', title: 'dog4', price: 1.89}, {url: 'www.google5.com', title: 'dog5', price: 1.89}, {url: 'www.google6.com', title: 'dog6', price: 1.89}, {url: 'www.google7.com', title: 'dog7', price: 1.89}, {url: 'www.google8.com', title: 'dog8', price: 1.89}, {url: 'www.google9.com', title: 'dog9', price: 1.89}, {url: 'www.google10.com', title: 'dog10', price: 1.89}, {url: 'www.google11.com', title: 'dog11', price: 1.89}, {url: 'www.google12.com', title: 'dog12', price: 1.89}]
+		} catch (error: any) {
+			throw new Error(`Failed to scrape product: ${error.message}`);
+		} finally {
+		await browser.close();
 	}
 }
 
@@ -174,17 +144,17 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 	if (!product) return;
 
 	// const browser = await puppeteer.launch({ headless: 'new' });
-	const browser = await getBrowserInstance();
 	try {
+		const browser = await getBrowserInstance();
 		const page = await browser.newPage();
 		await page.goto(product.url);
 
 		let updatedProduct = await page.evaluate(async () => {
-			function delay(ms: number) {
-				return new Promise((resolve) => {
-					setTimeout(resolve, ms);
-				});
-			}
+			// function delay(ms: number) {
+			// 	return new Promise((resolve) => {
+			// 		setTimeout(resolve, ms);
+			// 	});
+			// }
 			// Search Seller's data
 			const seller = document
 				.querySelector(
@@ -222,6 +192,7 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 						"didnt work"
 				);
 			});
+			await browser.close();
 
 			return { seller, sellerPfp, sold, rating, scrapedImageUrls };
 		});
@@ -234,7 +205,6 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 		console.log(`Failed to scrape product: ${error.message} dogggy`);
 	} finally {
 		console.log("done updating product");
-		await browser.close();
 	}
 }
 
