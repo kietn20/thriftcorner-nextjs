@@ -28,8 +28,8 @@ async function getBrowserInstance() {
 export async function scrapeProducts(searchQuery: string) {
 	if (!searchQuery) return;
 
-	// if (!process.env.MONGODB_URI) return 'Missing MONGODB_URI'
-	// await mongoose.connect(process.env.MONGODB_URI)
+	if (!process.env.MONGODB_URI) return 'Missing MONGODB_URI'
+	await mongoose.connect(process.env.MONGODB_URI)
 
 	const browser = await getBrowserInstance();
 	// try {
@@ -131,8 +131,11 @@ export async function scrapeProducts(searchQuery: string) {
 				await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
 				console.log("Chromium:", await browser.version());
 				console.log("Page Title:", await page.title());
+
+				await Product.deleteMany({})
+	    		await Product.insertMany([{url: 'www.google1.com', title: 'dog1', price: 1.89}, {url: 'www.google2.com', title: 'dog2', price: 1.89}, {url: 'www.google3.com', title: 'dog3', price: 1.89}, {url: 'www.google4.com', title: 'dog4', price: 1.89}, {url: 'www.google5.com', title: 'dog5', price: 1.89}, {url: 'www.google6.com', title: 'dog6', price: 1.89}, {url: 'www.google7.com', title: 'dog7', price: 1.89}, {url: 'www.google8.com', title: 'dog8', price: 1.89}, {url: 'www.google9.com', title: 'dog9', price: 1.89}, {url: 'www.google10.com', title: 'dog10', price: 1.89}, {url: 'www.google11.com', title: 'dog11', price: 1.89}, {url: 'www.google12.com', title: 'dog12', price: 1.89}])
 			
-				return [{url: 'www.google1.com', title: 'dog1', price: 1.89}, {url: 'www.google2.com', title: 'dog2', price: 1.89}, {url: 'www.google3.com', title: 'dog3', price: 1.89}, {url: 'www.google4.com', title: 'dog4', price: 1.89}, {url: 'www.google5.com', title: 'dog5', price: 1.89}, {url: 'www.google6.com', title: 'dog6', price: 1.89}, {url: 'www.google7.com', title: 'dog7', price: 1.89}, {url: 'www.google8.com', title: 'dog8', price: 1.89}, {url: 'www.google9.com', title: 'dog9', price: 1.89}, {url: 'www.google10.com', title: 'dog10', price: 1.89}, {url: 'www.google11.com', title: 'dog11', price: 1.89}, {url: 'www.google12.com', title: 'dog12', price: 1.89}]
+				// return [{url: 'www.google1.com', title: 'dog1', price: 1.89}, {url: 'www.google2.com', title: 'dog2', price: 1.89}, {url: 'www.google3.com', title: 'dog3', price: 1.89}, {url: 'www.google4.com', title: 'dog4', price: 1.89}, {url: 'www.google5.com', title: 'dog5', price: 1.89}, {url: 'www.google6.com', title: 'dog6', price: 1.89}, {url: 'www.google7.com', title: 'dog7', price: 1.89}, {url: 'www.google8.com', title: 'dog8', price: 1.89}, {url: 'www.google9.com', title: 'dog9', price: 1.89}, {url: 'www.google10.com', title: 'dog10', price: 1.89}, {url: 'www.google11.com', title: 'dog11', price: 1.89}, {url: 'www.google12.com', title: 'dog12', price: 1.89}]
 		} catch (error: any) {
 			throw new Error(`Failed to scrape product: ${error.message}`);
 		} finally {
