@@ -21,8 +21,8 @@ async function getBrowserInstance() {
 	console.log("RUNNING ON PRODUCTION !!!");
 	return await puppeteer.launch({
 		args: chromium.args,
-		executablePath: await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar'),
-		headless: 'new',
+		executablePath: await chromium.executablePath(),
+		headless: chromium.headless,
 	});
 }
 export async function scrapeProducts(searchQuery: string) {
@@ -34,7 +34,9 @@ export async function scrapeProducts(searchQuery: string) {
 	const browser = await getBrowserInstance();
 	try {
 		const page = await browser.newPage();
-		await page.goto("https://www.ebay.com/");
+		const productUrl = `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(searchQuery)}`;
+		await page.goto(productUrl)
+		// await page.goto("https://www.ebay.com/");
 		// await page.waitForSelector("#gh-ac");
 		// await page.type("#gh-ac", searchQuery);
 		// await page.click('input[value="Search"]');
@@ -129,7 +131,7 @@ export async function scrapeProducts(searchQuery: string) {
 		// try {
 				// const page = await browser.newPage();
 				// await page.goto("https://www.example.com", { waitUntil: "networkidle0" });
-				// console.log("Chromium:", await browser.version());
+				// console.log("Chromium:", await browser.version());f
 				// console.log("Page Title:", await page.title());
 
 				await Product.deleteMany({})
