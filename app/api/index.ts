@@ -33,8 +33,8 @@ export async function scrapeProducts(searchQuery: string) {
 
 	const browser = await getBrowserInstance();
 	try {
-		// const page = await browser.newPage();
-		// await page.goto("https://www.ebay.com/");
+		const page = await browser.newPage();
+		await page.goto("https://www.ebay.com/");
 		// await page.waitForSelector("#gh-ac");
 		// await page.type("#gh-ac", searchQuery);
 		// await page.click('input[value="Search"]');
