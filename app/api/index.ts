@@ -21,7 +21,7 @@ async function getBrowserInstance() {
 	console.log("RUNNING ON PRODUCTION !!!");
 	return await puppeteer.launch({
 		args: chromium.args,
-		executablePath: await chromium.executablePath(),
+		executablePath: await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar'),
 		headless: chromium.headless,
 	});
 }
