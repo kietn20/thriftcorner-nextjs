@@ -38,7 +38,7 @@ export async function scrapeProducts(searchQuery: string) {
 		await page.waitForSelector("#gh-ac");
 		await page.type("#gh-ac", searchQuery);
 		await page.click('input[value="Search"]');
-		await page.waitForNavigation();
+		// await page.waitForNavigation();
 
 	// 	var searchData = await page.evaluate(async () => {
 	// 		var listOfProducts: any[] = [];
