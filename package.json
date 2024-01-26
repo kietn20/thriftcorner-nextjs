@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^3.12.1",
+    "@playwright/test": "^1.41.1",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.0.0",
@@ -24,7 +25,7 @@
     "lucide-react": "^0.307.0",
     "mongoose": "^8.0.3",
     "next": "14.0.4",
-    "@playwright/test": "^1.41.1",
+    "playwright": "^1.41.1",
     "puppeteer-core": "^21.5.1",
     "react": "^18",
     "react-dom": "^18",
