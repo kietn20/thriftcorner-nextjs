@@ -153,7 +153,6 @@ export async function scrapeAndUpdateOneProduct(product: any) {
 
 		// const data = JSON.stringify(updatedProduct, null, 2);
 		// fs.writeFileSync("updatedProducts.json", data);
-
 		return updatedProduct;
 	} catch (error: any) {
 		console.log(`Failed to scrape product: ${error.message} dogggy`);
