@@ -56,7 +56,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 							<h2
 								className={`text-3xl ${DMST.variable} font-sans`}
 							>
-								US ${product.price.toFixed(2)}
+								US ${product.price}
 							</h2>
 							<h2
 								className={`text-2xl ${DMST.variable} font-sans mt-56`}
