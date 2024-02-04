@@ -2,7 +2,7 @@
 import Product from "@/lib/models/product.model";
 import { connectToDB } from "@/lib/mongoose";
 import mongoose, { mongo } from "mongoose";
-const { chromium } = require("playwright");
+const { chromium } = require("@playwright/test");
 
 // const chromium = require("@sparticuz/chromium");
 
