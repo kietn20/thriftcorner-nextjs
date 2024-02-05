@@ -1,4 +1,4 @@
-// "use server";
+"use server";
 // export const maxDuration = 9; // This function can run for a maximum of 5 seconds
 // export const dynamic = 'force-dynamic';
 import Product from "@/lib/models/product.model";
