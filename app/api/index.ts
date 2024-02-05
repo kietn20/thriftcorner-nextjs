@@ -1,4 +1,6 @@
 "use server";
+export const maxDuration = 60; // This function can run for a maximum of 5 seconds
+export const dynamic = 'force-dynamic';
 import Product from "@/lib/models/product.model";
 import { connectToDB } from "@/lib/mongoose";
 import mongoose, { mongo } from "mongoose";
