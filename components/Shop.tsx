@@ -65,7 +65,7 @@ const Shop = ({ allProducts }: any) => {
 								className="flex align-middle"
 							/>
 							<span className="text-white group opacity-0 absolute bottom-1 left-3 text-start group-hover:opacity-100 duration-300">
-								{product.price?.toFixed(2)}
+								{product.price}
 							</span>
 						</div>
 					</Link>
