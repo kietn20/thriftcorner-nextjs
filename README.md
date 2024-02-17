@@ -1,4 +1,4 @@
-# [thriftcorner (Ebay Scraper]
+# [thriftcorner (Ebay Scraper)]
 
 ## Description
 Do you want to know how much your recent thrift is worth? Check out this scrapper that scrapes eBay and fetches similar listings to give you an idea of its value. 
