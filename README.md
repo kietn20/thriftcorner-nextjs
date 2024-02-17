@@ -3,21 +3,8 @@
 ## Description
 Do you want to know how much your recent thrift is worth? Check out this scrapper that scrapes eBay and fetches similar listings to give you an idea of its value. 
 
-<!-- Home Page
-![homepage](https://github.com/kietn20/Listening-To-Yourself-REACT/blob/main/client/src/assets/LTYreactHomepage.png)
-
-Top Songs
-![songspage1](https://github.com/kietn20/Listening-To-Yourself-REACT/blob/main/client/src/assets/LTYreactTopsongspage.png)
-
-Recommendations & Add Song to Playlist Feature
-![songspage1](https://github.com/kietn20/Listening-To-Yourself-REACT/blob/main/client/src/assets/LTYreactRecommendations.png)
-![songspage1](https://github.com/kietn20/Listening-To-Yourself-REACT/blob/main/client/src/assets/LTYreactAddsong.png)
-
-Moods Cover Collage
-![songspage1](https://github.com/kietn20/Listening-To-Yourself-REACT/blob/main/client/src/assets/LTYreactMoodspage1.png)
-
-Moods Page <br />
-![songspage1](https://github.com/kietn20/Listening-To-Yourself-REACT/blob/main/client/src/assets/LTYreactMoodspage3.png) -->
+Home Page
+![homepage](https://github.com/kietn20/thriftcorner-nextjs/blob/main/public/homepage.png)
 
 ## Getting Started
 
