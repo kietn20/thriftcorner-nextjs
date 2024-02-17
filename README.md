@@ -6,6 +6,18 @@ Do you want to know how much your recent thrift is worth? Check out this scrappe
 Home Page
 ![homepage](https://github.com/kietn20/thriftcorner-nextjs/blob/main/public/homepage.png)
 
+Shop Component
+![homepage](https://github.com/kietn20/thriftcorner-nextjs/blob/main/public/shop.png)
+
+Item Page
+![homepage](https://github.com/kietn20/thriftcorner-nextjs/blob/main/public/item.png)
+
+Statistics Component
+![homepage](https://github.com/kietn20/thriftcorner-nextjs/blob/main/public/stats.png)
+
+Contact Component
+![homepage](https://github.com/kietn20/thriftcorner-nextjs/blob/main/public/contact.png)
+
 ## Getting Started
 
 ### Dependencies
@@ -16,8 +28,6 @@ Home Page
 * "@radix-ui/react-select": "^2.0.0",
 * "@sparticuz/chromium": "^119.0.2",
 * "@radix-ui/react-slot": "^1.0.2",
-* "class-variance-authority": "^0.7.0",
-* "clsx": "^2.1.0",
 * "embla-carousel-react": "^8.0.0-rc18",
 * "lucide-react": "^0.307.0",
 * "mongoose": "^8.0.3",
@@ -39,8 +49,6 @@ devDependencies
 * "puppeteer": "^21.7.0",
 * "tailwindcss": "^3.3.0",
 * "typescript": "^5"
-
-
 
 ### Installing
 
