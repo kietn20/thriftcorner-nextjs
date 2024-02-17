@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// import { scrapeAndStoreProduct } from "@/app/api/actions";
 import { Loader2 } from "lucide-react";
 import { scrapeProducts } from "@/app/api";
 
@@ -20,26 +19,11 @@ const SearchBar = ({ updateSearchBar = () => {} }) => {
 	const [searchPrompt, setSearchPrompt] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 
-	// const isValidProductLink = (url: string) => {
-	// 	const parsedURL = new URL(url);
-	// 	const hostname = parsedURL.hostname;
-
-	// 	if (
-	// 		hostname.includes("ebay.com") ||
-	// 		hostname.includes("ebay.") ||
-	// 		hostname.includes("ebay")
-	// 	) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// };
-
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		try {
 			setIsLoading(true);
-			// await scrapeAndStoreProduct(searchPrompt);
 			await scrapeProducts(searchPrompt)
 		} catch (error) {
 			console.log(error);

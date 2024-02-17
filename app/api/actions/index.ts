@@ -1,41 +1,10 @@
 "use server"
-import { revalidatePath } from "next/cache";
 import Product from "../../../lib/models/product.model";
-import { connectToDB, deleteCollection } from "../../../lib/mongoose";
-import { scrapeProducts } from "..";
 import mongoose from "mongoose";
-
-export async function scrapeAndStoreProduct(searchQuery: string) {
-	return
-	// if (!searchQuery) return;
-
-	// try {
-	// 	// deleteCollection();
-	// 	connectToDB();
-
-	// 	var scrapedProducts = await scrapeProducts(searchQuery);
-	// 	if (!scrapedProducts) return;
-
-	// 	await Product.deleteMany({})
-	// 	await Product.insertMany(scrapedProducts)
-	// 	await mongoose.connection.close()
-	// 	// scrapedProducts.forEach(async (product: any) => {
-	// 	// 	const newProduct = await Product.findOneAndUpdate(
-	// 	// 		{ url: product.url },
-	// 	// 		product,
-	// 	// 		{ upsert: true }
-	// 	// 	);
-	// 	// 	revalidatePath(`/products/${newProduct._id}`)
-	// 	// });
-	// } catch (error: any) {
-	// 	throw new Error(`Failed to create/update product: ${error.message}`);
-	// } 
-}
 
 export async function getProductById(productId: string) {
 	try {
 		// connectToDB()
-
 		const product = await Product.findOne({ _id: productId});
 		if (!product) return null;
 		await mongoose.connection.close()
